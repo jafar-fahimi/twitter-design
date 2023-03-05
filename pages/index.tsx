@@ -8,7 +8,15 @@ export default function Home() {
         <title>Twitter Design</title>
         <link rel="icon" href="twitter.svg" />
       </Head>
-      <div>Home</div>
+      <section className="mx-auto flex min-h-screen max-w-[1500px] bg-black">
+        {/* <Sidebar />
+        <Feed />
+        <Widgets
+          trendingResults={trendingResults}
+          followResults={followResults}
+        />
+        {isOpen && <Modal />} */}
+      </section>
     </main>
   );
 }
