@@ -1,5 +1,6 @@
 import { SparklesIcon } from "@heroicons/react/outline";
 import React from "react";
+import Input from "./Input";
 
 export default function Feed() {
   // by flex-grow: 1; our component hold as much size as possible than other comps in container.
@@ -10,6 +11,13 @@ export default function Feed() {
         <div className="hoverAnimation ml-auto flex h-9 w-9 items-center justify-center xl:px-0">
           <SparklesIcon className="h-5 text-white" />
         </div>
+      </div>
+
+      <Input />
+      <div className="pb-72">
+        {/* {posts.map((post) => (
+          <Post key={post.id} id={post.id} post={post.data()} />
+        ))} */}
       </div>
     </div>
   );
