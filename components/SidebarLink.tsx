@@ -4,7 +4,7 @@ import React from "react";
 type Props = {
   text: string;
   Icon: any;
-  active?: "";
+  active?: boolean;
 };
 
 function SidebarLink({ Icon, text, active }: Props) {

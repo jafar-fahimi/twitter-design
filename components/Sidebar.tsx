@@ -17,7 +17,7 @@ export default function Sidebar() {
     <section>
       <div>
         <div className="mt-4 mb-2.5 space-y-2.5 xl:ml-24">
-          <SidebarLink text="Home" Icon={HomeIcon} />
+          <SidebarLink text="Home" Icon={HomeIcon} active />
           <SidebarLink text="Explore" Icon={HashtagIcon} />
           <SidebarLink text="Notifications" Icon={BellIcon} />
           <SidebarLink text="Messages" Icon={InboxIcon} />

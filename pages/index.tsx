@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import Sidebar from "../components/Sidebar";
 
 export default function Home() {
   return (
@@ -9,8 +10,8 @@ export default function Home() {
         <link rel="icon" href="twitter.svg" />
       </Head>
       <section className="mx-auto flex min-h-screen max-w-[1500px] bg-black">
-        {/* <Sidebar />
-        <Feed />
+        <Sidebar />
+        {/* <Feed />
         <Widgets
           trendingResults={trendingResults}
           followResults={followResults}
