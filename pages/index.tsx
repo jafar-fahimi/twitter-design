@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import Feed from "../components/Feed";
 import Sidebar from "../components/Sidebar";
 
 export default function Home() {
@@ -11,8 +12,8 @@ export default function Home() {
       </Head>
       <section className="mx-auto flex min-h-screen max-w-[1500px] bg-black">
         <Sidebar />
-        {/* <Feed />
-        <Widgets
+        <Feed />
+        {/* <Widgets
           trendingResults={trendingResults}
           followResults={followResults}
         />
