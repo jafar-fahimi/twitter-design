@@ -7,7 +7,7 @@ type Props = {
   active?: boolean;
 };
 
-function SidebarLink({ Icon, text, active }: Props) {
+export default function SidebarLink({ Icon, text, active }: Props) {
   const router = useRouter();
   return (
     <div
@@ -21,5 +21,3 @@ function SidebarLink({ Icon, text, active }: Props) {
     </div>
   );
 }
-
-export default SidebarLink;
