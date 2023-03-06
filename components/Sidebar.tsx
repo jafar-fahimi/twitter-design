@@ -33,12 +33,12 @@ export default function Sidebar() {
         Tweet
       </button>
       <div
-        className="hoverAnimation mt-auto flex items-center justify-between text-[#d9d9d9] xl:ml-auto w-4/5 xl:-mr-5"
+        className="hoverAnimation mt-auto flex w-4/5 items-center justify-between text-[#d9d9d9] xl:ml-auto xl:-mr-5"
         onClick={() => {}}
       >
-        <div className="flex ml-2">
+        <div className="ml-2 flex">
           <img
-            src="twitter.svg"
+            src="images/people(1).png"
             alt=""
             className="h-10 w-10 rounded-full xl:mr-2.5"
           />
