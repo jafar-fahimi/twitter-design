@@ -12,6 +12,7 @@
     "@mantine/next": "^4.1.2",
     "@stripe/firestore-stripe-payments": "^0.0.6",
     "@tailwindcss/line-clamp": "^0.3.1",
+    "emoji-mart": "^5.5.2",
     "firebase": "^9.6.10",
     "next": "latest",
     "next-transpile-modules": "^9.0.0",
