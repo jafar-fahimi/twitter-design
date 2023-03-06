@@ -1,4 +1,10 @@
-import { PhotographIcon, XIcon } from "@heroicons/react/outline";
+import {
+  CalendarIcon,
+  ChartBarIcon,
+  EmojiHappyIcon,
+  PhotographIcon,
+  XIcon,
+} from "@heroicons/react/outline";
 import React, { useRef, useState } from "react";
 
 export default function Input() {
@@ -6,6 +12,7 @@ export default function Input() {
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const filePickerRef = useRef<any>(null);
+  const [showEmojis, setShowEmojis] = useState(false);
 
   // divide-y added border top & bottom for each elem in container.
   return (
@@ -55,6 +62,17 @@ export default function Input() {
               >
                 <PhotographIcon className="h-[22px] text-[#1d9bf0]" />
                 <input type="file" ref={filePickerRef} hidden />
+              </div>
+              <div className="icon rotate-90">
+                <ChartBarIcon className="h-[22px] text-[#1d9bf0]" />
+              </div>
+
+              <div className="icon" onClick={() => setShowEmojis(!showEmojis)}>
+                <EmojiHappyIcon className="h-[22px] text-[#1d9bf0]" />
+              </div>
+
+              <div className="icon">
+                <CalendarIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
             </div>
           </div>
