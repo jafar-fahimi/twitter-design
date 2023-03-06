@@ -1,5 +1,5 @@
 import { SparklesIcon } from "@heroicons/react/outline";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Input from "./Input";
 
 export default function Feed() {
