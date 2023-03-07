@@ -16,9 +16,10 @@ export default NextAuth({
         .split(" ")
         .join("")
         .toLocaleLowerCase();
-
       session.user.uid = token.sub;
       return session;
     },
   },
 });
+// Why is session token used?
+// The session token, also known as a sessionID, is an encrypted, unique string that identifies the specific session instance.
