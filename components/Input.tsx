@@ -5,9 +5,18 @@ import {
   PhotographIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "@firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
+import { db, storage } from "../utils/firebase";
 
 export default function Input() {
   const [input, setInput] = useState("");
@@ -18,10 +27,13 @@ export default function Input() {
 
   const addImageToPost = (e: any) => {
     const reader = new FileReader();
+    // FileReader Lets web applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer, using File or Blob objects
     if (e.target.files[0]) {
+      // e.target.files[0] is d blob
       reader.readAsDataURL(e.target.files[0]);
     }
     reader.onload = (readerEvent: any) => {
+      //getting d event & setting it as selectedFile
       setSelectedFile(readerEvent?.target.result);
     };
   };
@@ -37,6 +49,31 @@ export default function Input() {
   const sendPost = async () => {
     if (loading) return;
     setLoading(true);
+
+    // addDoc: add new document to collection of 'posts' & d data inside document will be {text, timestamp} // 'posts' collection will be in db.
+    const docRef = await addDoc(collection(db, "posts"), {
+      // id: session.user.uid,
+      // username: session.user.name,
+      // userImg: session.user.image,
+      // tag: session.user.tag,
+      text: input,
+      timestamp: serverTimestamp(), // return timestamp value
+    });
+
+    // return a storage refrence for the given url(d url of file inside storage)
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    if (selectedFile) {
+      // Uploads a string/value to this object's-location/ref. // return a Promise containing an UploadResult
+      await uploadString(imageRef, selectedFile, "data_url").then(async () => {
+        const downloadURL = await getDownloadURL(imageRef); //Returns the download URL for the given StorageReference.
+        // updateDoc Updates fields in the document referred to by the specified DocumentReference.
+        // doc Gets a DocumentReference instance that refers to the document at the specified absolute path.
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      });
+    }
 
     setLoading(false);
     setInput("");
@@ -75,11 +112,7 @@ export default function Input() {
               >
                 <XIcon className="h-5 text-white" />
               </div>
-              <img
-                src={selectedFile}
-                alt=""
-                className="max-h-80 rounded-2xl object-contain"
-              />
+              <img src={selectedFile} alt="" className="max-h-80 rounded-2xl" />
             </div>
           )}
         </div>
