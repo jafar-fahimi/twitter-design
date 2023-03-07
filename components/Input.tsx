@@ -16,6 +16,16 @@ export default function Input() {
   const filePickerRef = useRef<any>(null);
   const [showEmojis, setShowEmojis] = useState(false);
 
+  const addImageToPost = (e: any) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    reader.onload = (readerEvent: any) => {
+      setSelectedFile(readerEvent?.target.result);
+    };
+  };
+
   const addEmoji = (e: any) => {
     let sym = e.unified.split("-");
     let codesArray: any[] = [];
@@ -81,7 +91,12 @@ export default function Input() {
                 onClick={() => filePickerRef.current?.click()}
               >
                 <PhotographIcon className="h-[22px] text-[#1d9bf0]" />
-                <input type="file" ref={filePickerRef} hidden />
+                <input
+                  type="file"
+                  ref={filePickerRef}
+                  hidden
+                  onChange={addImageToPost}
+                />
               </div>
               <div className="icon rotate-90">
                 <ChartBarIcon className="h-[22px] text-[#1d9bf0]" />
