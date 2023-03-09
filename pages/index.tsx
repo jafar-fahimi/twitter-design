@@ -1,8 +1,7 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import { getProviders, getSession, useSession } from "next-auth/react";
-import { AppContextType } from "next/dist/shared/lib/utils";
 import Head from "next/head";
-import React, { ContextType } from "react";
+import React from "react";
 import Feed from "../components/Feed";
 import Login from "../components/Login";
 import Sidebar from "../components/Sidebar";
@@ -13,10 +12,9 @@ export default function Home({
   providers,
   session: mySession,
 }: any) {
-
   const { data: session } = useSession();
   if (!session) return <Login providers={providers} />;
-  
+
   return (
     <main>
       <Head>
@@ -37,10 +35,11 @@ export default function Home({
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const trendingResults = await fetch("https://jsonkeeper.com/b/NKEV").then(
-    (res) => res.json()
+  const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
+    (data) => data.json()
   );
-  const followResults = await fetch("https://jsonkeeper.com/b/WWMJ").then(
+  // without www. fetch failed;Hostname/IP does not match certificate's altnames
+  const followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
     (res) => res.json()
   );
 
@@ -53,7 +52,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       trendingResults,
       followResults,
       providers,
-      session,
+      session, // retrieve session server-side; so no need to load it first on onload.
     },
   };
 }
