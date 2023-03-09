@@ -22,14 +22,7 @@ import {
 import { useRouter } from "next/router";
 import Moment from "react-moment";
 import { db } from "../utils/firebase";
-
-type PostType = {
-  timestamp: Timestamp;
-  text: string;
-  tag: string;
-  username: string;
-  userImg: any;
-};
+import { PostType } from "../utils/typings";
 
 export default function Modal() {
   const { data: session } = useSession();
