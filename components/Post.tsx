@@ -60,6 +60,7 @@ export default function Post({ id, post, postPage }: Props) {
   );
 
   useEffect(
+    // see among likes(collection) & find if I haved liked this post(return 1).
     () =>
       setLiked(
         likes.findIndex((like: any) => like.id === session?.user?.uid) !== -1
@@ -68,6 +69,7 @@ export default function Post({ id, post, postPage }: Props) {
   );
 
   const likePost = async () => {
+    // if we have liked d post, delete our like, otherwise add our like.
     if (liked) {
       await deleteDoc(doc(db, "posts", id, "likes", session?.user?.uid));
     } else {
@@ -158,7 +160,7 @@ export default function Post({ id, post, postPage }: Props) {
             )}
           </div>
 
-          {session?.user?.uid === post?.id ? (
+          {session?.user?.uid === post?.id ? ( // to check if this post is from this user by checking id.
             <div
               className="flex items-center space-x-1 group"
               onClick={(e) => {
