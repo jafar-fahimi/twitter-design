@@ -56,10 +56,10 @@ export default function Input() {
     try {
       // addDoc: add new document to collection of 'posts' & d data inside document will be {text, timestamp} // 'posts' collection will be in db.
       const docRef = await addDoc(collection(db, "posts"), {
-        // id: session.user.uid,
-        // username: session.user.name,
-        // userImg: session.user.image,
-        // tag: session.user.tag,
+        id: session?.user?.uid as string,
+        username: session?.user?.name as string,
+        userImg: session?.user?.image as string,
+        tag: session?.user?.tag as string,
         text: input,
         timestamp: serverTimestamp(), // return timestamp value
       });
