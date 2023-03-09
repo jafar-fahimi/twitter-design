@@ -36,7 +36,7 @@ function Sidebar() {
         Tweet
       </button>
       <div
-        onClick={() => signOut}
+        onClick={() => signOut()}
         className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation xl:ml-auto xl:-mr-5"
       >
         <img
