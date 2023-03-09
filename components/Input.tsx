@@ -1,11 +1,13 @@
 import {
   CalendarIcon,
   ChartBarIcon,
-  EmojiHappyIcon,
-  PhotographIcon,
-  XIcon,
-} from "@heroicons/react/outline";
+  FaceSmileIcon,
+  PhotoIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
+// import Picker from "emoji-mart";
+
 import {
   addDoc,
   collection,
@@ -14,9 +16,9 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
-import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
 import { db, storage } from "../utils/firebase";
+import { useSession } from "next-auth/react";
 
 export default function Input() {
   const [input, setInput] = useState("");
@@ -25,6 +27,7 @@ export default function Input() {
   const filePickerRef = useRef<any>(null);
   const [showEmojis, setShowEmojis] = useState(false);
 
+  const { data: session } = useSession();
   const addImageToPost = (e: any) => {
     const reader = new FileReader();
     // FileReader Lets web applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer, using File or Blob objects
@@ -61,14 +64,14 @@ export default function Input() {
         timestamp: serverTimestamp(), // return timestamp value
       });
 
-      // return a storage refrence for the given url(d url of file inside storage)
+      // ref from firebase/storage return a storage refrence for the given url(d url of file inside storage)
       const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
       if (selectedFile) {
         // Uploads a string/value to this object's-location/ref. // return a Promise containing an UploadResult
         await uploadString(imageRef, selectedFile, "data_url").then(
           async () => {
-            const downloadURL = await getDownloadURL(imageRef); //Returns the download URL for the given StorageReference.
+            const downloadURL = await getDownloadURL(imageRef); // Returns the download URL for the given StorageReference.
             // updateDoc Updates fields in the document referred to by the specified DocumentReference.
             // doc Gets a DocumentReference instance that refers to the document at the specified absolute path.
             await updateDoc(doc(db, "posts", docRef.id), {
@@ -95,7 +98,7 @@ export default function Input() {
       }`}
     >
       <img
-        src="images/people(1).png"
+        src={session?.user?.image || "images/people(1).png"}
         alt=""
         className="h-11 w-11 cursor-pointer rounded-full"
         onClick={() => {}}
@@ -116,7 +119,7 @@ export default function Input() {
                 className="absolute top-1 left-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#15181c] bg-opacity-75 hover:bg-[#272c26]"
                 onClick={() => setSelectedFile(null)}
               >
-                <XIcon className="h-5 text-white" />
+                <XMarkIcon className="h-5 text-white" />
               </div>
               <img src={selectedFile} alt="" className="max-h-80 rounded-2xl" />
             </div>
@@ -129,7 +132,7 @@ export default function Input() {
                 className="icon"
                 onClick={() => filePickerRef.current?.click()}
               >
-                <PhotographIcon className="h-[22px] text-[#1d9bf0]" />
+                <PhotoIcon className="h-[22px] text-[#1d9bf0]" />
                 <input
                   type="file"
                   ref={filePickerRef}
@@ -142,13 +145,13 @@ export default function Input() {
               </div>
 
               <div className="icon" onClick={() => setShowEmojis(!showEmojis)}>
-                <EmojiHappyIcon className="h-[22px] text-[#1d9bf0]" />
+                <FaceSmileIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
 
               <div className="icon">
                 <CalendarIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
-              {showEmojis && (
+              {/* {showEmojis && (
                 <Picker
                   onSelect={addEmoji}
                   style={{
@@ -160,7 +163,7 @@ export default function Input() {
                   }}
                   theme="dark"
                 />
-              )}
+              )} */}
             </div>
             <button
               className="rounded-full bg-[#1d9bf0] px-4 py-1.5 font-bold text-white shadow-md hover:bg-[#1a8cd8] disabled:cursor-default disabled:opacity-50 disabled:hover:bg-[#1d9bf0]"
