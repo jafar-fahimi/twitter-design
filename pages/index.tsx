@@ -2,8 +2,11 @@ import { GetServerSidePropsContext } from "next";
 import { getProviders, getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
+import { useRecoilState } from "recoil";
+import { modalState } from "../atoms/modalAtom";
 import Feed from "../components/Feed";
 import Login from "../components/Login";
+import Modal from "../components/Modal";
 import Sidebar from "../components/Sidebar";
 
 export default function Home({
@@ -13,6 +16,7 @@ export default function Home({
   session: mySession,
 }: any) {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
   if (!session) return <Login providers={providers} />;
 
   return (
@@ -27,8 +31,8 @@ export default function Home({
         {/* <Widgets
           trendingResults={trendingResults}
           followResults={followResults}
-        />
-        {isOpen && <Modal />} */}
+          />*/}
+        {isOpen && <Modal />}
       </section>
     </main>
   );
