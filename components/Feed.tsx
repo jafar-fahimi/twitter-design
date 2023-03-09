@@ -15,7 +15,7 @@ export default function Feed() {
       (snapshot) => setPosts(snapshot.docs)
     );
     return () => unsubscribe();
-  });
+  }, [db]);
 
   // by flex-grow: 1; our component hold as much size as possible than other comps in container.
   return (
