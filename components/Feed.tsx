@@ -1,8 +1,22 @@
 import { SparklesIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { db } from "../utils/firebase";
 import Input from "./Input";
+import Post from "./Post";
 
 export default function Feed() {
+  const [posts, setPosts] = useState<any>([]);
+
+  useEffect(() => {
+    // fetching data(alldocs) from db dataBase, posts collection, then setting posts to them.
+    const unsubscribe = onSnapshot(
+      query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      (snapshot) => setPosts(snapshot.docs)
+    );
+    return () => unsubscribe();
+  });
+
   // by flex-grow: 1; our component hold as much size as possible than other comps in container.
   return (
     <div className="max-w-2xl flex-grow border-l border-r border-gray-700 sm:ml-[73px] xl:ml-[370px]">
@@ -15,9 +29,9 @@ export default function Feed() {
 
       <Input />
       <div className="pb-72">
-        {/* {posts.map((post) => (
+        {posts.map((post: any) => (
           <Post key={post.id} id={post.id} post={post.data()} />
-        ))} */}
+        ))}
       </div>
     </div>
   );
