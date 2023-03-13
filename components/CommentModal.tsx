@@ -24,7 +24,7 @@ import Moment from "react-moment";
 import { db } from "../utils/firebase";
 import { changedSessionType, PostType } from "../utils/typings";
 
-const Modal: FunctionComponent = () => {
+const CommentModal: FunctionComponent = () => {
   const {
     data: session,
   }: {
@@ -178,4 +178,4 @@ const Modal: FunctionComponent = () => {
   );
 };
 
-export default Modal;
+export default CommentModal;
