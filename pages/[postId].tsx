@@ -1,14 +1,30 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+
+import {
+  collection,
+  doc,
+  DocumentData,
+  onSnapshot,
+  orderBy,
+  query,
+} from "@firebase/firestore";
+import { getProviders, getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { commentModalState } from "../atoms/atoms";
 import Modal from "../components/CommentModal";
 import Sidebar from "../components/Sidebar";
+import Widgets from "../components/Widgets";
 import Post from "../components/Post";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
+import Login from "../components/Login";
 import { PostType } from "../utils/typings";
-import { NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
+import { commentModalState } from "../atoms/atoms";
+import { db } from "../utils/firebase";
+import Comment from "../components/Comment";
 
 const PostPage: NextPage<any> = ({
   trendingResults,
@@ -16,21 +32,44 @@ const PostPage: NextPage<any> = ({
   providers,
 }) => {
   const [commentIsOpen, setCommentIsOpen] = useRecoilState(commentModalState);
-  const [post, setPost] = useState<PostType>();
-  const [comments, setComments] = useState([]);
+  const [post, setPost] = useState<any>();
+  const [comments, setComments] = useState<any>([]);
   const router = useRouter();
   const { id } = router.query;
+  const { data: session } = useSession();
 
   // Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
   const titleText = `${post?.username} on Twitter: ${post?.text}`;
 
+  useEffect(
+    () =>
+      onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot.data())),
+    [db]
+  );
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(
+          collection(db, "posts", id, "comments"),
+          orderBy("timestamp", "desc")
+        ),
+        (snapshot) => setComments(snapshot.docs)
+      ),
+    [db, id]
+  );
+
+  if (!session) return <Login providers={providers} />;
+
   return (
     <div>
       <Head>
-        <title>{titleText}</title>
-        <link rel="icon" href="twitter.svg" />
+        <title>
+          {post?.username} on Twitter: "{post?.text}"
+        </title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-white min-h-screen flex max-w-[1500px] mx-auto">
+      <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
         <div className="flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
           <div className="flex items-center px-1.5 py-2 border-b border-gray-700 text-[#d9d9d9] font-semibold text-xl gap-x-4 sticky top-0 z-50 bg-black">
@@ -44,7 +83,22 @@ const PostPage: NextPage<any> = ({
           </div>
 
           <Post id={id as string} post={post} postPage />
+          {comments.length > 0 && (
+            <div className="pb-72">
+              {comments.map((comment: any) => (
+                <Comment
+                  key={comment.id}
+                  id={comment.id}
+                  comment={comment.data()}
+                />
+              ))}
+            </div>
+          )}
         </div>
+        <Widgets
+          trendingResults={trendingResults}
+          followResults={followResults}
+        />
         {commentIsOpen && <Modal />}
       </main>
     </div>
@@ -52,3 +106,23 @@ const PostPage: NextPage<any> = ({
 };
 
 export default PostPage;
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const trendingResults = await fetch("https://jsonkeeper.com/b/NKEV").then(
+    (res) => res.json()
+  );
+  const followResults = await fetch("https://jsonkeeper.com/b/WWMJ").then(
+    (res) => res.json()
+  );
+  const providers = await getProviders();
+  const session = await getSession(context);
+
+  return {
+    props: {
+      trendingResults,
+      followResults,
+      providers,
+      session,
+    },
+  };
+}
