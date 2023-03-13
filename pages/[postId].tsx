@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
-import Modal from "../components/Modal";
+import Modal from "../components/CommentModal";
 import Sidebar from "../components/Sidebar";
 import Post from "../components/Post";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
@@ -15,6 +15,7 @@ const PostPage: NextPage<any> = ({
   followResults,
   providers,
 }) => {
+
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [post, setPost] = useState<PostType>();
   const [comments, setComments] = useState([]);

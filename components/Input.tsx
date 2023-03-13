@@ -6,8 +6,6 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { FunctionComponent, useRef, useState } from "react";
-// import Picker from "emoji-mart";
-
 import {
   addDoc,
   collection,
@@ -20,6 +18,7 @@ import "emoji-mart/css/emoji-mart.css";
 import { db, storage } from "../utils/firebase";
 import { useSession } from "next-auth/react";
 import { changedSessionType } from "../utils/typings";
+// import Picker from "emoji-mart";
 
 const Input: FunctionComponent = () => {
   const [input, setInput] = useState("");
@@ -34,6 +33,7 @@ const Input: FunctionComponent = () => {
     data: null | changedSessionType;
     status: "loading" | "authenticated" | "unauthenticated";
   } = useSession();
+
   const addImageToPost = (e: any) => {
     const reader = new FileReader();
     // FileReader Lets web applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer, using File or Blob objects
@@ -41,20 +41,21 @@ const Input: FunctionComponent = () => {
       // e.target.files[0] is d blob
       reader.readAsDataURL(e.target.files[0]);
     }
-    reader.onload = (readerEvent: any) => {
-      //getting d event & setting it as selectedFile
+
+    // getting d event & setting it as selectedFile
+    reader.onload = (readerEvent: any) =>
       setSelectedFile(readerEvent?.target.result);
-    };
   };
 
-  const addEmoji = (e: any) => {
-    let sym = e.unified.split("-");
-    let codesArray: any[] = [];
-    sym.forEach((el: any) => codesArray.push("0x" + el));
-    let emoji = String.fromCodePoint(...codesArray);
-    setInput(input + emoji);
-  };
+  // const addEmoji = (e: any) => {
+  //   let sym = e.unified.split("-");
+  //   let codesArray: any[] = [];
+  //   sym.forEach((el: any) => codesArray.push("0x" + el));
+  //   let emoji = String.fromCodePoint(...codesArray);
+  //   setInput(input + emoji);
+  // };
 
+  // sendPost to firebase/firestore & store img to firebase/storage
   const sendPost = async () => {
     if (loading) return;
     setLoading(true);
@@ -183,6 +184,6 @@ const Input: FunctionComponent = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Input;

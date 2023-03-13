@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import Feed from "../components/Feed";
 import Login from "../components/Login";
-import Modal from "../components/Modal";
+import Modal from "../components/CommentModal";
 import Sidebar from "../components/Sidebar";
 import { changedSessionType } from "../utils/typings";
 
