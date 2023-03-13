@@ -44,13 +44,19 @@ const Home: NextPage = ({
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
-    (data) => data.json()
-  );
-  // without www. fetch failed;Hostname/IP does not match certificate's altnames
-  const followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
-    (res) => res.json()
-  );
+  let trendingResults = [];
+  let followResults = [];
+  try {
+    trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
+      (data) => data.json()
+    );
+    // without www. fetch failed;Hostname/IP does not match certificate's altnames
+    followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
+      (res) => res.json()
+    );
+  } catch (error: any) {
+    console.log("error is", error.message);
+  }
 
   // getProviders calls /api/auth/providers and returns a list of the currently configured authentication providers. It can be useful if you are creating a dynamic custom sign in page.
   const providers = await getProviders();

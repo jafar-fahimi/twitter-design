@@ -106,8 +106,8 @@ const PostPage: NextPage<any> = ({
 export default PostPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  let trendingResults = "";
-  let followResults = "";
+  let trendingResults = [];
+  let followResults = [];
 
   try {
     trendingResults = await fetch("https://jsonkeeper.com/b/NKEV").then((res) =>

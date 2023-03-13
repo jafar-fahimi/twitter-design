@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-const Trending: FunctionComponent<any> = ({ result }) => {
+const Trending: FunctionComponent<{ result: [] }> = ({ result }) => {
   return <div>Trending</div>;
 };
 
