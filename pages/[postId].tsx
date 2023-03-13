@@ -8,8 +8,13 @@ import Post from "../components/Post";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import { PostType } from "../utils/typings";
+import { NextPage } from "next";
 
-function PostPage({ trendingResults, followResults, providers }: any) {
+const PostPage: NextPage<any> = ({
+  trendingResults,
+  followResults,
+  providers,
+}) => {
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [post, setPost] = useState<PostType>();
   const [comments, setComments] = useState([]);
@@ -43,6 +48,6 @@ function PostPage({ trendingResults, followResults, providers }: any) {
       </main>
     </div>
   );
-}
+};
 
 export default PostPage;

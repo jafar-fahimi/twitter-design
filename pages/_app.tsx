@@ -3,10 +3,7 @@ import { RecoilRoot } from "recoil";
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 
-export default function App({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps) {
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   return (
     // `session` comes from `getServerSideProps` or `getInitialProps`.
     // Avoids flickering/session loading on first load.
@@ -16,4 +13,6 @@ export default function App({
       </RecoilRoot>
     </SessionProvider>
   );
-}
+};
+
+export default App;

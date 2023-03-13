@@ -2,8 +2,10 @@ import { Provider } from "next-auth/providers";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { FunctionComponent } from "react";
 
-function Login({ providers }: { providers: Provider }) {
+const Login: FunctionComponent<{ providers: Provider }> = ({ providers }) => {
+  // function Login({ providers }: { providers: Provider }) {
   return (
     <div className="flex flex-col items-center space-y-12 pt-48">
       <Image alt="Image " src="twitter.svg" width={150} height={150} />
@@ -33,6 +35,6 @@ function Login({ providers }: { providers: Provider }) {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

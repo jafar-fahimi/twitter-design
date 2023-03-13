@@ -1,15 +1,21 @@
 import { SparklesIcon } from "@heroicons/react/24/outline";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import {
+  collection,
+  DocumentData,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { db } from "../utils/firebase";
 import Input from "./Input";
 import Post from "./Post";
 
-export default function Feed() {
-  const [posts, setPosts] = useState<any>([]);
+const Feed: FunctionComponent = () => {
+  const [posts, setPosts] = useState<DocumentData>([]);
 
   useEffect(() => {
-    // fetching data(alldocs) from db dataBase, posts collection, then setting posts to them.
+    // fetching data(alldocs) from db dataBase, posts collection, then setPosts state.
     const unsubscribe = onSnapshot(
       query(collection(db, "posts"), orderBy("timestamp", "desc")),
       (snapshot) => setPosts(snapshot.docs)
@@ -28,6 +34,7 @@ export default function Feed() {
       </div>
 
       <Input />
+
       <div className="pb-72">
         {posts.map((post: any) => (
           <Post key={post.id} id={post.id} post={post.data()} />
@@ -35,4 +42,5 @@ export default function Feed() {
       </div>
     </div>
   );
-}
+};
+export default Feed;
