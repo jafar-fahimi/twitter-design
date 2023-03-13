@@ -2,7 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
-  DocumentSnapshot,
+  DocumentReference,
   onSnapshot,
   orderBy,
   query,
@@ -22,16 +22,22 @@ import {
 } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import Moment from "react-moment";
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atoms/modalAtom";
 import { db } from "../utils/firebase";
+import { changedSessionType } from "../utils/typings";
 
 type Props = { id: string; post: any; postPage?: any };
 
-export default function Post({ id, post, postPage }: Props) {
-  const { data: session } = useSession();
+const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
+  const {
+    data: session,
+  }: {
+    data: null | changedSessionType;
+    status: "loading" | "authenticated" | "unauthenticated";
+  } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [comments, setComments] = useState([]);
@@ -216,4 +222,6 @@ export default function Post({ id, post, postPage }: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default Post;
