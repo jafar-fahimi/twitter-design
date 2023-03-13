@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { modalState } from "../atoms/modalAtom";
+import { commentModalState } from "../atoms/atoms";
 import Modal from "../components/CommentModal";
 import Sidebar from "../components/Sidebar";
 import Post from "../components/Post";
@@ -15,22 +15,22 @@ const PostPage: NextPage<any> = ({
   followResults,
   providers,
 }) => {
-
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [commentIsOpen, setCommentIsOpen] = useRecoilState(commentModalState);
   const [post, setPost] = useState<PostType>();
   const [comments, setComments] = useState([]);
   const router = useRouter();
   const { id } = router.query;
 
+  // Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+  const titleText = `${post?.username} on Twitter: ${post?.text}`;
+
   return (
     <div>
       <Head>
-        <title>
-          {post?.username} on Twitter: "{post?.text}"
-        </title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>{titleText}</title>
+        <link rel="icon" href="twitter.svg" />
       </Head>
-      <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
+      <main className="bg-white min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />
         <div className="flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[73px] xl:ml-[370px]">
           <div className="flex items-center px-1.5 py-2 border-b border-gray-700 text-[#d9d9d9] font-semibold text-xl gap-x-4 sticky top-0 z-50 bg-black">
@@ -45,7 +45,7 @@ const PostPage: NextPage<any> = ({
 
           <Post id={id as string} post={post} postPage />
         </div>
-        {isOpen && <Modal />}
+        {commentIsOpen && <Modal />}
       </main>
     </div>
   );

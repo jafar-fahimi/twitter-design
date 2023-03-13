@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atoms/modalAtom";
+import { commentModalState, postIdState } from "../atoms/atoms";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, FunctionComponent, useEffect, useState } from "react";
 import {
@@ -31,7 +31,7 @@ const CommentModal: FunctionComponent = () => {
     data: null | changedSessionType;
     status: "loading" | "authenticated" | "unauthenticated";
   } = useSession();
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [commentIsOpen, setCommentIsOpen] = useRecoilState(commentModalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [post, setPost] = useState<PostType>();
   const [comment, setComment] = useState("");
@@ -56,15 +56,19 @@ const CommentModal: FunctionComponent = () => {
       timestamp: serverTimestamp(),
     });
 
-    setIsOpen(false);
+    setCommentIsOpen(false);
     setComment("");
 
     router.push(`/${postId}`);
   };
 
   return (
-    <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="fixed z-50 inset-0 pt-8" onClose={setIsOpen}>
+    <Transition.Root show={commentIsOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        className="fixed z-50 inset-0 pt-8"
+        onClose={setCommentIsOpen}
+      >
         <div className="flex items-start justify-center min-h-[800px] sm:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -91,7 +95,7 @@ const CommentModal: FunctionComponent = () => {
               <div className="flex items-center px-1.5 py-2 border-b border-gray-700">
                 <div
                   className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => setCommentIsOpen(false)}
                 >
                   <XMarkIcon className="h-[22px] text-white" />
                 </div>

@@ -25,7 +25,7 @@ import { useRouter } from "next/router";
 import { FunctionComponent, useEffect, useState } from "react";
 import Moment from "react-moment";
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "../atoms/modalAtom";
+import { commentModalState, postIdState } from "../atoms/atoms";
 import { db } from "../utils/firebase";
 import { changedSessionType } from "../utils/typings";
 
@@ -39,7 +39,7 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
     status: "loading" | "authenticated" | "unauthenticated";
   } = useSession();
 
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [commentIsOpen, setCommentIsOpen] = useRecoilState(commentModalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -124,6 +124,7 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
               </span>
             </div>
             <span className="hover:underline text-sm sm:text-[15px]">
+              <span className="relative -top-1 font-bold"> . </span>
               <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
             </span>
             {!postPage && (
@@ -154,7 +155,7 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
             onClick={(e) => {
               e.stopPropagation();
               setPostId(id);
-              setIsOpen(true);
+              setCommentIsOpen(true);
             }}
           >
             <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">

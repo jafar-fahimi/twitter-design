@@ -3,7 +3,7 @@ import { getProviders, getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import React, { FunctionComponent } from "react";
 import { useRecoilState } from "recoil";
-import { modalState } from "../atoms/modalAtom";
+import { commentModalState } from "../atoms/atoms";
 import Feed from "../components/Feed";
 import Login from "../components/Login";
 import Modal from "../components/CommentModal";
@@ -25,15 +25,13 @@ const Home: NextPage = ({
     status: "loading" | "authenticated" | "unauthenticated";
   } = useSession();
 
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [commentIsOpen, setCommentIsOpen] = useRecoilState(commentModalState);
   if (!session) return <Login providers={providers} />;
 
-  // Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
-  const titleText = "Twitter Design";
   return (
     <main>
       <Head>
-        <title>{titleText}</title>
+        <title> Twitter Design</title>
         <link rel="icon" href="twitter.svg" />
       </Head>
       <section className="mx-auto flex min-h-screen max-w-[1500px] bg-black">
@@ -43,7 +41,7 @@ const Home: NextPage = ({
           trendingResults={trendingResults}
           followResults={followResults}
           />*/}
-        {isOpen && <Modal />}
+        {commentIsOpen && <Modal />}
       </section>
     </main>
   );
@@ -67,7 +65,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       trendingResults,
       followResults,
       providers,
-      session, // retrieve session server-side; so no need to load it first on onload.
+      session, // retrieve session server-side; to avoid browser from showing it for 1sec
     },
   };
 }
