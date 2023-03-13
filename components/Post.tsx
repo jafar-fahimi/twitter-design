@@ -38,11 +38,12 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
     data: null | changedSessionType;
     status: "loading" | "authenticated" | "unauthenticated";
   } = useSession();
+
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
-  const [liked, setLiked] = useState(false);
+  const [iLiked, setILiked] = useState(false);
   const router = useRouter();
 
   useEffect(
@@ -66,17 +67,17 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
   );
 
   useEffect(
-    // see among likes(collection) & find if I haved liked this post(return 1).
+    // see among likes(collection) & find if I haved iliked this post(return 1).
     () =>
-      setLiked(
+      setILiked(
         likes.findIndex((like: any) => like.id === session?.user?.uid) !== -1
       ),
     [likes]
   );
 
   const likePost = async () => {
-    // if we have liked d post, delete our like, otherwise add our like.
-    if (liked) {
+    // if we have iliked d post, delete our like, otherwise add our like.
+    if (iLiked) {
       await deleteDoc(doc(db, "posts", id, "likes", session?.user?.uid));
     } else {
       await setDoc(doc(db, "posts", id, "likes", session?.user?.uid), {
@@ -165,8 +166,8 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
               </span>
             )}
           </div>
-
-          {session?.user?.uid === post?.id ? ( // to check if this post is from this user by checking id.
+          {session?.user?.uid === post?.id ? (
+            // to check if this post is from this user, show delete icon else show <- ->
             <div
               className="flex items-center space-x-1 group"
               onClick={(e) => {
@@ -186,7 +187,6 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
               </div>
             </div>
           )}
-
           <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
@@ -195,7 +195,7 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
             }}
           >
             <div className="icon group-hover:bg-pink-600/10">
-              {liked ? (
+              {iLiked ? (
                 <HeartIconFilled className="h-5 text-pink-600" />
               ) : (
                 <HeartIcon className="h-5 group-hover:text-pink-600" />
@@ -204,15 +204,14 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
             {likes.length > 0 && (
               <span
                 className={`group-hover:text-pink-600 text-sm ${
-                  liked && "text-pink-600"
+                  iLiked && "text-pink-600"
                 }`}
               >
                 {likes.length}
               </span>
             )}
           </div>
-
-          <div className="icon group">
+          <div className="icon group" title="share it">
             <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />
           </div>
           <div className="icon group">
