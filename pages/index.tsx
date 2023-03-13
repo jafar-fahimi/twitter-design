@@ -1,28 +1,39 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import { getProviders, getSession, useSession } from "next-auth/react";
 import Head from "next/head";
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import Feed from "../components/Feed";
 import Login from "../components/Login";
 import Modal from "../components/Modal";
 import Sidebar from "../components/Sidebar";
+import { changedSessionType } from "../utils/typings";
 
-export default function Home({
+// export default function Home({
+const Home: NextPage = ({
   trendingResults,
   followResults,
   providers,
   session: mySession,
-}: any) {
-  const { data: session } = useSession();
+}: any) => {
+  const {
+    data: session,
+    status,
+  }: {
+    data: null | changedSessionType;
+    status: "loading" | "authenticated" | "unauthenticated";
+  } = useSession();
+
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   if (!session) return <Login providers={providers} />;
 
+  // Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+  const titleText = "Twitter Design";
   return (
     <main>
       <Head>
-        <title>Twitter Design</title>
+        <title>{titleText}</title>
         <link rel="icon" href="twitter.svg" />
       </Head>
       <section className="mx-auto flex min-h-screen max-w-[1500px] bg-black">
@@ -36,7 +47,7 @@ export default function Home({
       </section>
     </main>
   );
-}
+};
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
@@ -60,3 +71,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   };
 }
+
+export default Home;

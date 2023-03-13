@@ -5,7 +5,7 @@ import {
   PhotoIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useRef, useState } from "react";
+import { FunctionComponent, useRef, useState } from "react";
 // import Picker from "emoji-mart";
 
 import {
@@ -19,15 +19,21 @@ import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import "emoji-mart/css/emoji-mart.css";
 import { db, storage } from "../utils/firebase";
 import { useSession } from "next-auth/react";
+import { changedSessionType } from "../utils/typings";
 
-export default function Input() {
+const Input: FunctionComponent = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const filePickerRef = useRef<any>(null);
   const [showEmojis, setShowEmojis] = useState(false);
 
-  const { data: session } = useSession();
+  const {
+    data: session,
+  }: {
+    data: null | changedSessionType;
+    status: "loading" | "authenticated" | "unauthenticated";
+  } = useSession();
   const addImageToPost = (e: any) => {
     const reader = new FileReader();
     // FileReader Lets web applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer, using File or Blob objects
@@ -178,3 +184,5 @@ export default function Input() {
     </div>
   );
 }
+
+export default Input;

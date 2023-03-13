@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atoms/modalAtom";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, FunctionComponent, useEffect, useState } from "react";
 import {
   onSnapshot,
   doc,
@@ -22,10 +22,15 @@ import {
 import { useRouter } from "next/router";
 import Moment from "react-moment";
 import { db } from "../utils/firebase";
-import { PostType } from "../utils/typings";
+import { changedSessionType, PostType } from "../utils/typings";
 
-export default function Modal() {
-  const { data: session } = useSession();
+const Modal: FunctionComponent = () => {
+  const {
+    data: session,
+  }: {
+    data: null | changedSessionType;
+    status: "loading" | "authenticated" | "unauthenticated";
+  } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [post, setPost] = useState<PostType>();
@@ -171,4 +176,6 @@ export default function Modal() {
       </Dialog>
     </Transition.Root>
   );
-}
+};
+
+export default Modal;

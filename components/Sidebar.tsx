@@ -13,9 +13,18 @@ import {
 import SidebarLink from "./SidebarLink";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
+import { changedSessionType } from "../utils/typings";
+import { FunctionComponent } from "react";
 
-function Sidebar() {
-  const { data: session } = useSession();
+const Sidebar: FunctionComponent = () => {
+  const {
+    data: session,
+    status,
+  }: {
+    data: null | changedSessionType;
+    status: "loading" | "authenticated" | "unauthenticated";
+  } = useSession();
 
   return (
     <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full">
@@ -38,6 +47,7 @@ function Sidebar() {
       <div
         onClick={() => signOut()}
         className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation xl:ml-auto xl:-mr-5"
+        title="Sign Out"
       >
         <img
           src={session?.user?.image || "people(1).png"}
@@ -52,6 +62,6 @@ function Sidebar() {
       </div>
     </div>
   );
-}
+};
 
 export default Sidebar;
