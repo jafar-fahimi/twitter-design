@@ -4,7 +4,6 @@
 import {
   collection,
   doc,
-  DocumentData,
   onSnapshot,
   orderBy,
   query,
@@ -20,22 +19,21 @@ import Post from "../components/Post";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Login from "../components/Login";
-import { PostType } from "../utils/typings";
 import { GetServerSidePropsContext, NextPage } from "next";
 import { commentModalState } from "../atoms/atoms";
 import { db } from "../utils/firebase";
 import Comment from "../components/Comment";
 
 const PostPage: NextPage<any> = ({
-  trendingResults,
-  followResults,
+  trendingResults = "",
+  followResults = "",
   providers,
 }) => {
   const [commentIsOpen, setCommentIsOpen] = useRecoilState(commentModalState);
   const [post, setPost] = useState<any>();
   const [comments, setComments] = useState<any>([]);
   const router = useRouter();
-  const { id } = router.query;
+  const { postId } = router.query;
   const { data: session } = useSession();
 
   // Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
@@ -43,7 +41,9 @@ const PostPage: NextPage<any> = ({
 
   useEffect(
     () =>
-      onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot.data())),
+      onSnapshot(doc(db, "posts", postId), (snapshot) =>
+        setPost(snapshot.data())
+      ),
     [db]
   );
 
@@ -51,12 +51,12 @@ const PostPage: NextPage<any> = ({
     () =>
       onSnapshot(
         query(
-          collection(db, "posts", id, "comments"),
+          collection(db, "posts", postId, "comments"),
           orderBy("timestamp", "desc")
         ),
         (snapshot) => setComments(snapshot.docs)
       ),
-    [db, id]
+    [db, postId]
   );
 
   if (!session) return <Login providers={providers} />;
@@ -82,7 +82,7 @@ const PostPage: NextPage<any> = ({
             Tweet
           </div>
 
-          <Post id={id as string} post={post} postPage />
+          <Post id={postId as string} post={post} postPage />
           {comments.length > 0 && (
             <div className="pb-72">
               {comments.map((comment: any) => (
@@ -108,12 +108,20 @@ const PostPage: NextPage<any> = ({
 export default PostPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const trendingResults = await fetch("https://jsonkeeper.com/b/NKEV").then(
-    (res) => res.json()
-  );
-  const followResults = await fetch("https://jsonkeeper.com/b/WWMJ").then(
-    (res) => res.json()
-  );
+  let trendingResults = "";
+  let followResults = "";
+
+  try {
+    trendingResults = await fetch("https://jsonkeeper.com/b/NKEV").then((res) =>
+      res.json()
+    );
+    followResults = await fetch("https://jsonkeeper.com/b/WWMJ").then((res) =>
+      res.json()
+    );
+  } catch (error: any) {
+    console.log("error occured ", error.message);
+  }
+
   const providers = await getProviders();
   const session = await getSession(context);
 
