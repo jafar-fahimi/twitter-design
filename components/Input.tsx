@@ -18,7 +18,6 @@ import "emoji-mart/css/emoji-mart.css";
 import { db, storage } from "../utils/firebase";
 import { useSession } from "next-auth/react";
 import { changedSessionType } from "../utils/typings";
-// import Picker from "emoji-mart";
 
 const Input: FunctionComponent = () => {
   const [input, setInput] = useState("");

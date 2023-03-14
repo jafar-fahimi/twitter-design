@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+
 import {
   collection,
   deleteDoc,
@@ -35,7 +38,7 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
   const {
     data: session,
   }: {
-    data: null | changedSessionType;
+    data: any;
     status: "loading" | "authenticated" | "unauthenticated";
   } = useSession();
 
