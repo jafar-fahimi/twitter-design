@@ -6,6 +6,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { FunctionComponent, useRef, useState } from "react";
+import { EmojiClickData, EmojiStyle } from "emoji-picker-react";
+import Picker from "emoji-picker-react";
 import {
   addDoc,
   collection,
@@ -14,7 +16,6 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
-// import "emoji-mart/css/emoji-mart";
 import { db, storage } from "../utils/firebase";
 import { useSession } from "next-auth/react";
 import { changedSessionType } from "../utils/typings";
@@ -45,14 +46,6 @@ const Input: FunctionComponent = () => {
     reader.onload = (readerEvent: any) =>
       setSelectedFile(readerEvent?.target.result);
   };
-
-  // const addEmoji = (e: any) => {
-  //   let sym = e.unified.split("-");
-  //   let codesArray: any[] = [];
-  //   sym.forEach((el: any) => codesArray.push("0x" + el));
-  //   let emoji = String.fromCodePoint(...codesArray);
-  //   setInput(input + emoji);
-  // };
 
   // sendPost to firebase/firestore & store img to firebase/storage
   const sendPost = async () => {
@@ -112,6 +105,7 @@ const Input: FunctionComponent = () => {
       <div className="w-full divide-y divide-gray-700">
         <div className={` ${input && "space-y-2.5"}`}>
           <textarea
+            onClick={() => setShowEmojis(false)}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="What are you thinking about?"
@@ -142,11 +136,15 @@ const Input: FunctionComponent = () => {
                 <input
                   type="file"
                   ref={filePickerRef}
+                  onClick={() => setShowEmojis(false)}
                   hidden
                   onChange={addImageToPost}
                 />
               </div>
-              <div className="icon rotate-90">
+              <div
+                className="icon rotate-90"
+                onClick={() => setShowEmojis(false)}
+              >
                 <ChartBarIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
 
@@ -154,22 +152,22 @@ const Input: FunctionComponent = () => {
                 <FaceSmileIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
 
-              <div className="icon">
+              <div className="icon" onClick={() => setShowEmojis(false)}>
                 <CalendarIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
-              {/* {showEmojis && (
-                <Picker
-                  onSelect={addEmoji}
-                  style={{
-                    position: "absolute",
-                    marginTop: "465px",
-                    marginLeft: -40,
-                    maxWidth: "320px",
-                    borderRadius: "20px",
-                  }}
-                  theme="dark"
-                />
-              )} */}
+              {showEmojis && (
+                <div className="absolute mt-[475px] -ml-10 max-w-xs rounded-2xl">
+                  <Picker
+                    onEmojiClick={(
+                      emojiObject: EmojiClickData,
+                      event: MouseEvent
+                    ): void => {
+                      setInput(input + emojiObject?.emoji);
+                    }}
+                    emojiStyle={EmojiStyle.TWITTER}
+                  />
+                </div>
+              )}
             </div>
             <button
               className="rounded-full bg-[#1d9bf0] px-4 py-1.5 font-bold text-white shadow-md hover:bg-[#1a8cd8] disabled:cursor-default disabled:opacity-50 disabled:hover:bg-[#1d9bf0]"
