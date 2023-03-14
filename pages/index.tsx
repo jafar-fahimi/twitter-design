@@ -1,5 +1,11 @@
 import { GetServerSidePropsContext, NextPage } from "next";
-import { getProviders, getSession, useSession } from "next-auth/react";
+import {
+  ClientSafeProvider,
+  LiteralUnion,
+  getProviders,
+  getSession,
+  useSession,
+} from "next-auth/react";
 import React from "react";
 import { useRecoilState } from "recoil";
 import { commentModalState } from "../atoms/atoms";
@@ -9,13 +15,22 @@ import Modal from "../components/CommentModal";
 import Sidebar from "../components/Sidebar";
 import { changedSessionType } from "../utils/typings";
 import Widgets from "../components/Widgets";
+import { Session } from "next-auth";
+import { BuiltInProviderType } from "next-auth/providers";
+import { Provider } from "next-auth/providers";
 
-const Home: NextPage = ({
+type Props = {
+  trendingResults: [];
+  followResults: [];
+  providers: Provider;
+  session: Session;
+};
+const Home: NextPage<Props> = ({
   trendingResults,
   followResults,
   providers,
   session: mySession,
-}: any) => {
+}) => {
   const {
     data: session,
     status,
@@ -53,13 +68,16 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
       (res) => res.json()
     );
-  } catch (error: any) {
-    console.log("error is", error.message);
+  } catch (error) {
+    if (error instanceof Error) console.log("error is", error.message);
   }
 
   // getProviders calls /api/auth/providers and returns a list of the currently configured authentication providers. It can be useful if you are creating a dynamic custom sign in page.
-  const providers = await getProviders();
-  const session = await getSession(context);
+  const providers: Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  > | null = await getProviders();
+  const session: Session | null = await getSession(context);
 
   return {
     props: {

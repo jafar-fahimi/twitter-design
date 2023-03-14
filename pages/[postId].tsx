@@ -119,8 +119,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     followResults = await fetch("https://jsonkeeper.com/b/WWMJ").then((res) =>
       res.json()
     );
-  } catch (error: any) {
-    console.log("error occured ", error.message);
+  } catch (error) {
+    if (error instanceof Error) console.log("error occured ", error.message);
   }
 
   const providers = await getProviders();

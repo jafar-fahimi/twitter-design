@@ -84,8 +84,8 @@ const Input: FunctionComponent = () => {
           }
         );
       }
-    } catch (error: any) {
-      alert("Error! " + error.message);
+    } catch (error) {
+      if (error instanceof Error) alert("Error! " + error.message);
     }
 
     setLoading(false);
@@ -177,7 +177,7 @@ const Input: FunctionComponent = () => {
                   height: "25px",
                   marginTop: "-12px",
                   opacity: "0%",
-                  cursor:"pointer",
+                  cursor: "pointer",
                   marginLeft: "6px",
                   position: "absolute",
                 }}
