@@ -14,7 +14,7 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
-import "emoji-mart/css/emoji-mart.css";
+// import "emoji-mart/css/emoji-mart";
 import { db, storage } from "../utils/firebase";
 import { useSession } from "next-auth/react";
 import { changedSessionType } from "../utils/typings";

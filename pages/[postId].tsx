@@ -23,6 +23,7 @@ import { GetServerSidePropsContext, NextPage } from "next";
 import { commentModalState } from "../atoms/atoms";
 import { db } from "../utils/firebase";
 import Comment from "../components/Comment";
+import { changedSessionType } from "../utils/typings";
 
 const PostPage: NextPage<any> = ({
   trendingResults = "",
@@ -34,14 +35,20 @@ const PostPage: NextPage<any> = ({
   const [comments, setComments] = useState<any>([]);
   const router = useRouter();
   const { postId } = router.query;
-  const { data: session } = useSession();
+  const {
+    data: session,
+    status,
+  }: {
+    data: changedSessionType | null;
+    status: "loading" | "authenticated" | "unauthenticated";
+  } = useSession();
 
   // Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
   const titleText = `${post?.username} on Twitter: "${post?.text}"`;
 
   useEffect(
     () =>
-      onSnapshot(doc(db, "posts", postId), (snapshot) =>
+      onSnapshot(doc(db, "posts", postId as string), (snapshot) =>
         setPost(snapshot.data())
       ),
     [db]
@@ -51,7 +58,7 @@ const PostPage: NextPage<any> = ({
     () =>
       onSnapshot(
         query(
-          collection(db, "posts", postId, "comments"),
+          collection(db, "posts", postId as string, "comments"),
           orderBy("timestamp", "desc")
         ),
         (snapshot) => setComments(snapshot.docs)

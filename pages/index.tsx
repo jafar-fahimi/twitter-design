@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from "next";
 import { getProviders, getSession, useSession } from "next-auth/react";
-import Head from "next/head";
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { useRecoilState } from "recoil";
 import { commentModalState } from "../atoms/atoms";
 import Feed from "../components/Feed";

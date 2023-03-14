@@ -5,7 +5,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  DocumentReference,
   onSnapshot,
   orderBy,
   query,
@@ -37,8 +36,9 @@ type Props = { id: string; post: any; postPage?: any };
 const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
   const {
     data: session,
+    status,
   }: {
-    data: any;
+    data: changedSessionType | null;
     status: "loading" | "authenticated" | "unauthenticated";
   } = useSession();
 
@@ -81,11 +81,16 @@ const Post: FunctionComponent<Props> = ({ id, post, postPage }) => {
   const likePost = async () => {
     // if we have iliked d post, delete our like, otherwise add our like.
     if (iLiked) {
-      await deleteDoc(doc(db, "posts", id, "likes", session?.user?.uid));
+      await deleteDoc(
+        doc(db, "posts", id, "likes", session?.user?.uid as string)
+      );
     } else {
-      await setDoc(doc(db, "posts", id, "likes", session?.user?.uid), {
-        username: session?.user?.name,
-      });
+      await setDoc(
+        doc(db, "posts", id, "likes", session?.user?.uid as string),
+        {
+          username: session?.user?.name,
+        }
+      );
     }
   };
 
