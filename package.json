@@ -16,7 +16,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
-    "emoji-mart": "^5.5.2",
+    "emoji-picker-react": "^4.4.7",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "firebase": "^9.17.1",
