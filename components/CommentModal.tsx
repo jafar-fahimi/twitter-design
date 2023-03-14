@@ -2,6 +2,7 @@ import { EmojiClickData, EmojiStyle } from "emoji-picker-react";
 import Picker from "emoji-picker-react";
 import { useRecoilState } from "recoil";
 import { commentModalState, postIdState } from "../atoms/atoms";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, FunctionComponent, useEffect, useState } from "react";
 import {
@@ -26,6 +27,10 @@ import { db } from "../utils/firebase";
 import { changedSessionType, PostType } from "../utils/typings";
 
 const CommentModal: FunctionComponent = () => {
+  const [showDatesPanel, setShowDatesPanel] = useState(false);
+  const [date, setDate] = useState<DateObject | DateObject[] | null | string>(
+    ""
+  );
   const {
     data: session,
   }: {
@@ -142,7 +147,7 @@ const CommentModal: FunctionComponent = () => {
                         onClick={() => setShowEmojis(false)}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Tweet your reply"
-                        rows={2}
+                        rows={7}
                         className="bg-transparent outline-none text-[#d9d9d9] text-lg placeholder-gray-500 tracking-wide w-full min-h-[80px]"
                       />
 
@@ -170,7 +175,7 @@ const CommentModal: FunctionComponent = () => {
                           </div>
 
                           {showEmojis && (
-                            <div className="absolute z-50 mt-[475px] -ml-10 max-w-xs rounded-2xl">
+                            <div className="absolute z-50 -mt-32 -ml-10 max-w-xs rounded-2xl">
                               <Picker
                                 onEmojiClick={(
                                   emojiObject: EmojiClickData,
@@ -183,6 +188,34 @@ const CommentModal: FunctionComponent = () => {
                             </div>
                           )}
 
+                          <DatePicker
+                            style={{
+                              width: "25px",
+                              height: "25px",
+                              opacity: "0%",
+                              cursor: "pointer",
+                              marginLeft: "6px",
+                              position: "absolute",
+                              bottom: "14px",
+                              zIndex: "34",
+                            }}
+                            format="MMMM DD YYYY"
+                            value={
+                              date as unknown as
+                                | string
+                                | number
+                                | DateObject
+                                | Date[]
+                            }
+                            onChange={
+                              setDate as unknown as (
+                                selectedDates: DateObject | DateObject[] | null
+                              ) => void
+                            }
+                            onClose={() =>
+                              setComment(comment + " " + date?.toString())
+                            }
+                          />
                           <div
                             className="icon"
                             onClick={() => setShowEmojis(false)}

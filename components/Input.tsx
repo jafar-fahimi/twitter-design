@@ -177,6 +177,7 @@ const Input: FunctionComponent = () => {
                   height: "25px",
                   marginTop: "-12px",
                   opacity: "0%",
+                  cursor:"pointer",
                   marginLeft: "6px",
                   position: "absolute",
                 }}
