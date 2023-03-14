@@ -72,7 +72,6 @@ const PostPage: NextPage<any> = ({
     <div>
       <Head>
         <title>{titleText}</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-black min-h-screen flex max-w-[1500px] mx-auto">
         <Sidebar />

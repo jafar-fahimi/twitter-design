@@ -11,8 +11,6 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
         <title> Twitter Design</title>
         <link rel="icon" href="twitter.svg" />
       </Head>
-      // `session` comes from `getServerSideProps` or `getInitialProps`. //
-      Avoids flickering/session loading on first load.
       <SessionProvider session={session}>
         <RecoilRoot>
           <Component {...pageProps} />

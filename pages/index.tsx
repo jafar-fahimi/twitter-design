@@ -68,6 +68,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       providers,
       session, // retrieve session server-side; to avoid browser from showing it for 1sec
     },
+    // `session` comes from `getServerSideProps` or `getInitialProps`.
+    // Avoids flickering/session loading on first load.
   };
 }
 
