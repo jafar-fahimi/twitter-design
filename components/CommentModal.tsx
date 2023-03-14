@@ -1,3 +1,5 @@
+import { EmojiClickData, EmojiStyle } from "emoji-picker-react";
+import Picker from "emoji-picker-react";
 import { useRecoilState } from "recoil";
 import { commentModalState, postIdState } from "../atoms/atoms";
 import { Dialog, Transition } from "@headlessui/react";
@@ -36,6 +38,7 @@ const CommentModal: FunctionComponent = () => {
   const [post, setPost] = useState<PostType>();
   const [comment, setComment] = useState("");
   const router = useRouter();
+  const [showEmojis, setShowEmojis] = useState(false);
 
   useEffect(
     () =>
@@ -66,7 +69,7 @@ const CommentModal: FunctionComponent = () => {
     <Transition.Root show={commentIsOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed z-50 inset-0 pt-8"
+        className="fixed z-30 inset-0 pt-8"
         onClose={setCommentIsOpen}
       >
         <div className="flex items-start justify-center min-h-[800px] sm:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -137,6 +140,7 @@ const CommentModal: FunctionComponent = () => {
                     <div className="flex-grow mt-2">
                       <textarea
                         value={comment}
+                        onClick={() => setShowEmojis(false)}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Tweet your reply"
                         rows={2}
@@ -145,19 +149,45 @@ const CommentModal: FunctionComponent = () => {
 
                       <div className="flex items-center justify-between pt-2.5">
                         <div className="flex items-center">
-                          <div className="icon">
+                          <div
+                            className="icon"
+                            onClick={() => setShowEmojis(false)}
+                          >
                             <PhotoIcon className="text-[#1d9bf0] h-[22px]" />
                           </div>
 
-                          <div className="icon rotate-90">
+                          <div
+                            className="icon rotate-90"
+                            onClick={() => setShowEmojis(false)}
+                          >
                             <ChartBarIcon className="text-[#1d9bf0] h-[22px]" />
                           </div>
 
-                          <div className="icon">
-                            <FaceSmileIcon className="text-[#1d9bf0] h-[22px]" />
+                          <div
+                            className="icon"
+                            onClick={() => setShowEmojis(!showEmojis)}
+                          >
+                            <FaceSmileIcon className="h-[22px] text-[#1d9bf0]" />
                           </div>
 
-                          <div className="icon">
+                          {showEmojis && (
+                            <div className="absolute z-50 mt-[475px] -ml-10 max-w-xs rounded-2xl">
+                              <Picker
+                                onEmojiClick={(
+                                  emojiObject: EmojiClickData,
+                                  event: MouseEvent
+                                ): void => {
+                                  setComment(comment + emojiObject.emoji);
+                                }}
+                                emojiStyle={EmojiStyle.TWITTER}
+                              />
+                            </div>
+                          )}
+
+                          <div
+                            className="icon"
+                            onClick={() => setShowEmojis(false)}
+                          >
                             <CalendarIcon className="text-[#1d9bf0] h-[22px]" />
                           </div>
                         </div>

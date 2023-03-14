@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import {
   ChartBarIcon,
-  ChatBubbleBottomCenterIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
   EllipsisHorizontalIcon,
   HeartIcon,
   ShareIcon,
@@ -42,7 +42,7 @@ const Comment: FunctionComponent<any> = ({ id, comment }) => {
 
         <div className="text-[#6e767d] flex justify-between w-10/12">
           <div className="icon group">
-            <ChatBubbleBottomCenterIcon className="h-5 group-hover:text-[#1d9bf0]" />
+            <ChatBubbleOvalLeftEllipsisIcon className="h-5 group-hover:text-[#1d9bf0]" />
           </div>
 
           <div className="flex items-center space-x-1 group">
