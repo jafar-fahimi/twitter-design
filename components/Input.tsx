@@ -19,6 +19,7 @@ import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import { db, storage } from "../utils/firebase";
 import { useSession } from "next-auth/react";
 import { changedSessionType } from "../utils/typings";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 
 const Input: FunctionComponent = () => {
   const [input, setInput] = useState("");
@@ -26,6 +27,10 @@ const Input: FunctionComponent = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const filePickerRef = useRef<any>(null);
   const [showEmojis, setShowEmojis] = useState(false);
+  const [showDatesPanel, setShowDatesPanel] = useState(false);
+  const [date, setDate] = useState<DateObject | DateObject[] | null | string>(
+    ""
+  );
 
   const {
     data: session,
@@ -152,9 +157,6 @@ const Input: FunctionComponent = () => {
                 <FaceSmileIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
 
-              <div className="icon" onClick={() => setShowEmojis(false)}>
-                <CalendarIcon className="h-[22px] text-[#1d9bf0]" />
-              </div>
               {showEmojis && (
                 <div className="absolute mt-[475px] -ml-10 max-w-xs rounded-2xl">
                   <Picker
@@ -168,7 +170,37 @@ const Input: FunctionComponent = () => {
                   />
                 </div>
               )}
+
+              <DatePicker
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  marginTop: "-12px",
+                  opacity: "0%",
+                  marginLeft: "6px",
+                  position: "absolute",
+                }}
+                format="MMMM DD YYYY"
+                value={date as unknown as string | number | DateObject | Date[]}
+                onChange={
+                  setDate as unknown as (
+                    selectedDates: DateObject | DateObject[] | null
+                  ) => void
+                }
+                onClose={() => setInput(input + " " + date?.toString())}
+              />
+
+              <div
+                className="icon"
+                onClick={() => {
+                  setShowEmojis(false);
+                  setShowDatesPanel(!showDatesPanel);
+                }}
+              >
+                <CalendarIcon className="h-[22px] text-[#1d9bf0]" />
+              </div>
             </div>
+
             <button
               className="rounded-full bg-[#1d9bf0] px-4 py-1.5 font-bold text-white shadow-md hover:bg-[#1a8cd8] disabled:cursor-default disabled:opacity-50 disabled:hover:bg-[#1d9bf0]"
               disabled={!input && !selectedFile}
