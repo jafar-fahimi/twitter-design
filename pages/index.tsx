@@ -8,8 +8,8 @@ import Login from "../components/Login";
 import Modal from "../components/CommentModal";
 import Sidebar from "../components/Sidebar";
 import { changedSessionType } from "../utils/typings";
+import Widgets from "../components/Widgets";
 
-// export default function Home({
 const Home: NextPage = ({
   trendingResults,
   followResults,
@@ -32,10 +32,10 @@ const Home: NextPage = ({
       <section className="mx-auto flex min-h-screen max-w-[1500px] bg-black">
         <Sidebar />
         <Feed />
-        {/* <Widgets
+        <Widgets
           trendingResults={trendingResults}
           followResults={followResults}
-          />*/}
+        />
         {commentIsOpen && <Modal />}
       </section>
     </main>
