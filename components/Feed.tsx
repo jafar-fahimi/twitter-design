@@ -14,8 +14,8 @@ import Post from "./Post";
 const Feed: FunctionComponent = () => {
   const [posts, setPosts] = useState<DocumentData>([]);
 
+  // fetching data(alldocs) from db dataBase's posts collection, then setPosts state.
   useEffect(() => {
-    // fetching data(alldocs) from db dataBase, posts collection, then setPosts state.
     const unsubscribe = onSnapshot(
       query(collection(db, "posts"), orderBy("timestamp", "desc")),
       (snapshot) => setPosts(snapshot.docs)

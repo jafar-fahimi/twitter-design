@@ -16,7 +16,7 @@ import Post from "../components/Post";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Login from "../components/Login";
-import { GetServerSidePropsContext, NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { commentModalState } from "../atoms/atoms";
 import { db } from "../utils/firebase";
 import Comment from "../components/Comment";
@@ -108,7 +108,9 @@ const PostPage: NextPage<any> = ({
 
 export default PostPage;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   let trendingResults = [];
   let followResults = [];
 
@@ -134,4 +136,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       session,
     },
   };
-}
+};

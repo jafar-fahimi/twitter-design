@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext, NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import {
   ClientSafeProvider,
   LiteralUnion,
@@ -57,7 +57,9 @@ const Home: NextPage<Props> = ({
   );
 };
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   let trendingResults = [];
   let followResults = [];
   try {
@@ -77,18 +79,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
   > | null = await getProviders();
-  const session: Session | null = await getSession(context);
+  const session: changedSessionType | null = await getSession(context);
 
   return {
     props: {
       trendingResults,
       followResults,
       providers,
-      session, // retrieve session server-side; to avoid browser from showing it for 1sec
+      session,
     },
-    // `session` comes from `getServerSideProps` or `getInitialProps`.
+    // retrieve session server-side; to avoid browser from showing it for 1sec
+    // `session` comes from `getServerSideProps`.
     // Avoids flickering/session loading on first load.
   };
-}
+};
 
 export default Home;

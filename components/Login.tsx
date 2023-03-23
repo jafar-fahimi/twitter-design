@@ -20,7 +20,9 @@ const Login: FunctionComponent<{ providers: Provider }> = ({ providers }) => {
                 <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
                 <span className="absolute left-0 w-48 h-48 px-28 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
                 <span className="relative">
-                  Sign in with {provider.name || ""}
+                  {provider.name
+                    ? `Sign in with ${provider.name}`
+                    : "Something Went Wrong. Can't sign in with this provider"}
                 </span>
               </span>
               <span
