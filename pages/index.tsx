@@ -60,14 +60,44 @@ const Home: NextPage<Props> = ({
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  let trendingResults: any[] = [];
-  let followResults: any[] = [];
+  let trendingResults: {
+    tweetText: string;
+    tweets: number;
+    trendingText: string;
+  }[] = [];
+  let followResults: {
+    id: string;
+    title: string;
+    firstName: string;
+    lastName: string;
+    picture: string;
+  }[] = [];
+
   try {
-    // context.res.setHeader("app-id", "641ec239f728f6cc0524ed25");
-    // trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
-    //   (data) => data.json()
-    // );
-    // trendingResults = ["a", "b", "c"];
+    trendingResults = [
+      { trendingText: "Trending", tweetText: "LinkedIn", tweets: 23000 },
+      {
+        trendingText: "Technology - Trending",
+        tweetText: "TypeScript",
+        tweets: 13000,
+      },
+      {
+        trendingText: "Politics - Trending",
+        tweetText: "Taliban",
+        tweets: 5400,
+      },
+      {
+        trendingText: "Culture - Trending",
+        tweetText: "New Year Eve",
+        tweets: 900,
+      },
+      {
+        trendingText: "Sport - trending",
+        tweetText: "Qatar",
+        tweets: 2300034,
+      },
+    ];
+
     // without www. fetch failed;Hostname/IP does not match certificate's altnames
     const fetchedData: {
       data: {
@@ -85,7 +115,6 @@ export const getServerSideProps: GetServerSideProps = async (
       headers: { "app-id": "641ec239f728f6cc0524ed25" },
     }).then((res) => res.json());
 
-    // console.log("fetchedData are", fetchedData);
     followResults = fetchedData.data;
   } catch (error) {
     if (error instanceof Error) console.log("error is", error.message);
