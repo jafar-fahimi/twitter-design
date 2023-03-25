@@ -110,10 +110,13 @@ export const getServerSideProps: GetServerSideProps = async (
       total: number;
       page: number;
       limit: number;
-    } = await fetch("https://dummyapi.io/data/v1/user?limit=5", {
-      method: "GET",
-      headers: { "app-id": "641ec239f728f6cc0524ed25" },
-    }).then((res) => res.json());
+    } = await fetch(
+      process.env.NEXT_PUBLIC_DUMMYAPI_BASE_URL + "user?limit=5",
+      {
+        method: "GET",
+        headers: { "app-id": process.env.DUMMYAPI_TOKEN as string },
+      }
+    ).then((res) => res.json());
 
     followResults = fetchedData.data;
   } catch (error) {
