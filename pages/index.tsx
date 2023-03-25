@@ -60,16 +60,33 @@ const Home: NextPage<Props> = ({
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  let trendingResults = [];
-  let followResults = [];
+  let trendingResults: any[] = [];
+  let followResults: any[] = [];
   try {
-    trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
-      (data) => data.json()
-    );
+    // context.res.setHeader("app-id", "641ec239f728f6cc0524ed25");
+    // trendingResults = await fetch("https://www.jsonkeeper.com/b/NKEV").then(
+    //   (data) => data.json()
+    // );
+    // trendingResults = ["a", "b", "c"];
     // without www. fetch failed;Hostname/IP does not match certificate's altnames
-    followResults = await fetch("https://www.jsonkeeper.com/b/WWMJ").then(
-      (res) => res.json()
-    );
+    const fetchedData: {
+      data: {
+        id: string;
+        title: string;
+        firstName: string;
+        lastName: string;
+        picture: string;
+      }[];
+      total: number;
+      page: number;
+      limit: number;
+    } = await fetch("https://dummyapi.io/data/v1/user?limit=5", {
+      method: "GET",
+      headers: { "app-id": "641ec239f728f6cc0524ed25" },
+    }).then((res) => res.json());
+
+    // console.log("fetchedData are", fetchedData);
+    followResults = fetchedData.data;
   } catch (error) {
     if (error instanceof Error) console.log("error is", error.message);
   }
