@@ -15,6 +15,7 @@ import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { changedSessionType } from "../utils/typings";
 import { FunctionComponent } from "react";
+import Link from "next/link";
 
 const Sidebar: FunctionComponent = () => {
   const {
@@ -27,9 +28,13 @@ const Sidebar: FunctionComponent = () => {
 
   return (
     <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full">
-      <div className="flex items-center justify-center py-1 hoverAnimation xl:ml-24">
+      <Link
+        href="/"
+        title="home"
+        className="flex items-center justify-center hoverAnimation xl:ml-24"
+      >
         <Image alt="Twitter Logo" src="twitter.svg" width={30} height={30} />
-      </div>
+      </Link>
       <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
         <SidebarLink text="Home" Icon={HomeIcon} />
         <SidebarLink text="Explore" Icon={HashtagIcon} />
