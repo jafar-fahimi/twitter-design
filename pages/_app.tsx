@@ -8,7 +8,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   return (
     <>
       <Head>
-        <title> Twitter Design</title>
+        <title>Twitter Design</title>
         <link rel="icon" href="twitter.svg" />
       </Head>
       <SessionProvider session={session}>
