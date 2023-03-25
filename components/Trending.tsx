@@ -7,6 +7,8 @@ type PropsType = {
 };
 
 const Trending: FunctionComponent<PropsType> = ({ result }) => {
+  const tweetsInString = result.tweets.toString(); // if tweets is 4 numbers slice it & add K at its end
+
   return (
     <div className="px-3 py-1 rounded-md hover:bg-gray-800/10">
       <div className="py-1 cursor-pointer transition duration-200 ease-out flex items-center justify-between">
@@ -18,7 +20,12 @@ const Trending: FunctionComponent<PropsType> = ({ result }) => {
       <p className="font-bold hover:cursor-pointer hover:underline">
         &#x23;{result.tweetText}
       </p>
-      <p className="text-gray-500">{result.tweets} Tweets</p>
+      <p className="text-gray-500">
+        {tweetsInString.length > 3
+          ? `${tweetsInString.slice(0, tweetsInString.length - 3)}K`
+          : tweetsInString}{" "}
+        Tweets
+      </p>
     </div>
   );
 };
