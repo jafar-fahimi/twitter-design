@@ -2,9 +2,14 @@ import { EmojiClickData, EmojiStyle } from "emoji-picker-react";
 import Picker from "emoji-picker-react";
 import { useRecoilState } from "recoil";
 import { commentModalState, postIdState } from "../atoms/atoms";
-import DatePicker, { DateObject } from "react-multi-date-picker";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, FunctionComponent, useEffect, useState } from "react";
+import {
+  Fragment,
+  FunctionComponent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
 import {
   onSnapshot,
   doc,
@@ -25,12 +30,9 @@ import { useRouter } from "next/router";
 import Moment from "react-moment";
 import { db } from "../utils/firebase";
 import { changedSessionType, PostType } from "../utils/typings";
+import SelectedDate from "./Input/SelectedDate";
 
 const CommentModal: FunctionComponent = () => {
-  const [showDatesPanel, setShowDatesPanel] = useState(false);
-  const [date, setDate] = useState<DateObject | DateObject[] | null | string>(
-    ""
-  );
   const {
     data: session,
   }: {
@@ -43,6 +45,7 @@ const CommentModal: FunctionComponent = () => {
   const [comment, setComment] = useState("");
   const router = useRouter();
   const [showEmojis, setShowEmojis] = useState(false);
+  const [showDatesPanel, setShowDatesPanel] = useState(false);
 
   useEffect(
     () =>
@@ -52,8 +55,8 @@ const CommentModal: FunctionComponent = () => {
     [db]
   );
 
-  const sendComment = async (e: any) => {
-    e.preventDefault();
+  const sendComment = async (event: SyntheticEvent) => {
+    event.preventDefault();
 
     await addDoc(collection(db, "posts", postId, "comments"), {
       comment: comment,
@@ -188,37 +191,21 @@ const CommentModal: FunctionComponent = () => {
                             </div>
                           )}
 
-                          <DatePicker
-                            style={{
-                              width: "25px",
-                              height: "25px",
-                              opacity: "0%",
-                              cursor: "pointer",
-                              marginLeft: "6px",
-                              position: "absolute",
-                              bottom: "14px",
-                              zIndex: "34",
-                            }}
-                            format="MMMM DD YYYY"
-                            value={
-                              date as unknown as
-                                | string
-                                | number
-                                | DateObject
-                                | Date[]
-                            }
-                            onChange={
-                              setDate as unknown as (
-                                selectedDates: DateObject | DateObject[] | null
-                              ) => void
-                            }
-                            onClose={() =>
-                              setComment(comment + " " + date?.toString())
-                            }
-                          />
+                          {showDatesPanel && (
+                            <SelectedDate
+                              showDatesPanel={showDatesPanel}
+                              setShowDatesPanel={setShowDatesPanel}
+                              setInput={setComment}
+                              input={comment}
+                            />
+                          )}
+
                           <div
                             className="icon"
-                            onClick={() => setShowEmojis(false)}
+                            onClick={() => {
+                              setShowEmojis(false);
+                              setShowDatesPanel(true);
+                            }}
                           >
                             <CalendarIcon className="text-[#1d9bf0] h-[22px]" />
                           </div>
