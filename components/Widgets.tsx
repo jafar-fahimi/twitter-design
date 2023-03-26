@@ -1,10 +1,7 @@
 import Trending from "./Trending";
 import Image from "next/image";
-import { FunctionComponent } from "react";
-import {
-  MagnifyingGlassCircleIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { FunctionComponent, useState } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 
 type PropsType = {
@@ -27,6 +24,8 @@ const Widgets: FunctionComponent<PropsType> = ({
   trendingResults,
   followResults,
 }) => {
+  const [trendingResultAmount, setTrendingResultAmount] = useState(3);
+  const [followResultAmount, setFollowResultAmount] = useState(3);
   const router = useRouter();
   const currentPathName = router.asPath.slice(1); // e.g: Explore
 
@@ -46,7 +45,7 @@ const Widgets: FunctionComponent<PropsType> = ({
           </div>
           <div className="text-[#d9d9d9] space-y-3 bg-[#15181c] pt-2 rounded-xl w-11/12 xl:w-9/12">
             <h4 className="font-bold text-xl px-4">Trends for you</h4>
-            {trendingResults.map(
+            {trendingResults.slice(0, trendingResultAmount).map(
               (
                 result: {
                   tweetText: string;
@@ -58,7 +57,10 @@ const Widgets: FunctionComponent<PropsType> = ({
                 <Trending key={index} result={result} />
               )
             )}
-            <button className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light">
+            <button
+              onClick={() => setTrendingResultAmount(trendingResultAmount + 5)}
+              className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light"
+            >
               Show more
             </button>
           </div>
@@ -67,38 +69,43 @@ const Widgets: FunctionComponent<PropsType> = ({
 
       <div className="text-[#d9d9d9] space-y-3 bg-[#15181c] pt-2 rounded-xl w-11/12 xl:w-9/12">
         <h4 className="font-bold text-xl px-4">Who to follow</h4>
-        {followResults.map(
-          (result: {
-            id: string;
-            title: string;
-            firstName: string;
-            lastName: string;
-            picture: string;
-          }) => (
-            <div
-              className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center"
-              key={result.id}
-            >
-              <Image
-                src={result.picture}
-                width={50}
-                height={50}
-                alt="Image"
-                className="rounded-full"
-              />
-              <div className="ml-4 leading-5 group">
-                <h4 className="font-bold group-hover:underline">
-                  {result.firstName} {result.lastName}
-                </h4>
-                <h5 className="text-gray-500 text-[15px]">{`@${result.firstName}${result.lastName}`}</h5>
+        {followResults
+          .slice(0, followResultAmount)
+          .map(
+            (result: {
+              id: string;
+              title: string;
+              firstName: string;
+              lastName: string;
+              picture: string;
+            }) => (
+              <div
+                className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center"
+                key={result.id}
+              >
+                <Image
+                  src={result.picture}
+                  width={50}
+                  height={50}
+                  alt="Image"
+                  className="rounded-full"
+                />
+                <div className="ml-4 leading-5 group">
+                  <h4 className="font-bold group-hover:underline">
+                    {result.firstName} {result.lastName}
+                  </h4>
+                  <h5 className="text-gray-500 text-[15px]">{`@${result.firstName}${result.lastName}`}</h5>
+                </div>
+                <button className="ml-auto bg-white text-black rounded-full font-bold text-sm py-1.5 px-3.5">
+                  Follow
+                </button>
               </div>
-              <button className="ml-auto bg-white text-black rounded-full font-bold text-sm py-1.5 px-3.5">
-                Follow
-              </button>
-            </div>
-          )
-        )}
-        <button className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light">
+            )
+          )}
+        <button
+          onClick={() => setFollowResultAmount(followResultAmount + 5)}
+          className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light"
+        >
           Show more
         </button>
       </div>

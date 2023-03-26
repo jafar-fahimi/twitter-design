@@ -111,7 +111,7 @@ export const getServerSideProps: GetServerSideProps = async (
       page: number;
       limit: number;
     } = await fetch(
-      process.env.NEXT_PUBLIC_DUMMYAPI_BASE_URL + "user?limit=5",
+      process.env.NEXT_PUBLIC_DUMMYAPI_BASE_URL + "user?limit=20",
       {
         method: "GET",
         headers: { "app-id": process.env.DUMMYAPI_TOKEN as string },

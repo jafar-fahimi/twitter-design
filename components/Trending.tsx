@@ -1,5 +1,4 @@
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import React, { FunctionComponent } from "react";
 
 type PropsType = {
