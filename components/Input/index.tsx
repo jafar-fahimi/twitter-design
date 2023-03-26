@@ -16,10 +16,10 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
-import { db, storage } from "../utils/firebase";
+import { db, storage } from "../../utils/firebase";
 import { useSession } from "next-auth/react";
-import { changedSessionType } from "../utils/typings";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import { changedSessionType } from "../../utils/typings";
+import SelectedDate from "./SelectedDate";
 
 const Input: FunctionComponent = () => {
   const [input, setInput] = useState("");
@@ -28,9 +28,6 @@ const Input: FunctionComponent = () => {
   const filePickerRef = useRef<any>(null);
   const [showEmojis, setShowEmojis] = useState(false);
   const [showDatesPanel, setShowDatesPanel] = useState(false);
-  const [date, setDate] = useState<DateObject | DateObject[] | null | string>(
-    ""
-  );
 
   const {
     data: session,
@@ -171,25 +168,14 @@ const Input: FunctionComponent = () => {
                 </div>
               )}
 
-              <DatePicker
-                style={{
-                  width: "25px",
-                  height: "25px",
-                  marginTop: "-12px",
-                  opacity: "0%",
-                  cursor: "pointer",
-                  marginLeft: "6px",
-                  position: "absolute",
-                }}
-                format="MMMM DD YYYY"
-                value={date as unknown as string | number | DateObject | Date[]}
-                onChange={
-                  setDate as unknown as (
-                    selectedDates: DateObject | DateObject[] | null
-                  ) => void
-                }
-                onClose={() => setInput(input + " " + date?.toString())}
-              />
+              {showDatesPanel && (
+                <SelectedDate
+                  showDatesPanel={showDatesPanel}
+                  setShowDatesPanel={setShowDatesPanel}
+                  setInput={setInput}
+                  input={input}
+                />
+              )}
 
               <div
                 className="icon"
