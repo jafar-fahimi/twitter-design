@@ -12,11 +12,21 @@ type PropsType = {
   }[];
 
   followResults: {
-    id: string;
-    title: string;
-    firstName: string;
-    lastName: string;
-    picture: string;
+    name: { title: string; first: string; last: string };
+    login: {
+      uuid: string;
+      username: string;
+      password: string;
+      salt: string;
+      md5: string;
+      sha1: string;
+      sha256: string;
+    };
+    picture: {
+      large: string;
+      medium: string;
+      thumbnail: string;
+    };
   }[];
 };
 
@@ -69,39 +79,47 @@ const Widgets: FunctionComponent<PropsType> = ({
 
       <div className="text-[#d9d9d9] space-y-3 bg-[#15181c] pt-2 rounded-xl w-11/12 xl:w-9/12">
         <h4 className="font-bold text-xl px-4">Who to follow</h4>
-        {followResults
-          .slice(0, followResultAmount)
-          .map(
-            (result: {
-              id: string;
-              title: string;
-              firstName: string;
-              lastName: string;
-              picture: string;
-            }) => (
-              <div
-                className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center"
-                key={result.id}
-              >
-                <Image
-                  src={result.picture}
-                  width={50}
-                  height={50}
-                  alt="Image"
-                  className="rounded-full"
-                />
-                <div className="ml-4 leading-5 group">
-                  <h4 className="font-bold group-hover:underline">
-                    {result.firstName} {result.lastName}
-                  </h4>
-                  <h5 className="text-gray-500 text-[15px]">{`@${result.firstName}${result.lastName}`}</h5>
-                </div>
-                <button className="ml-auto bg-white text-black rounded-full font-bold text-sm py-1.5 px-3.5">
-                  Follow
-                </button>
+        {followResults.slice(0, followResultAmount).map(
+          (result: {
+            name: { title: string; first: string; last: string };
+            login: {
+              uuid: string;
+              username: string;
+              password: string;
+              salt: string;
+              md5: string;
+              sha1: string;
+              sha256: string;
+            };
+            picture: {
+              large: string;
+              medium: string;
+              thumbnail: string;
+            };
+          }) => (
+            <div
+              className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center"
+              key={result.login.uuid}
+            >
+              <Image
+                src={result.picture.thumbnail}
+                width={50}
+                height={50}
+                alt="Image"
+                className="rounded-full"
+              />
+              <div className="ml-4 leading-5 group">
+                <h4 className="font-bold group-hover:underline">
+                  {result.name.first} {result.name.last}
+                </h4>
+                <h5 className="text-gray-500 text-[15px]">{`@${result.login.username}`}</h5>
               </div>
-            )
-          )}
+              <button className="ml-auto bg-white text-black rounded-full font-bold text-sm py-1.5 px-3.5">
+                Follow
+              </button>
+            </div>
+          )
+        )}
         <button
           onClick={() => setFollowResultAmount(followResultAmount + 5)}
           className="hover:bg-white hover:bg-opacity-[0.03] px-4 py-3 cursor-pointer transition duration-200 ease-out flex items-center justify-between w-full text-[#1d9bf0] font-light"
