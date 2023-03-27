@@ -50,27 +50,27 @@ const SelectedDate: React.FC<any> = ({
   const [selectedMonthOption, setSelectedMonthOption] = useState<{
     value: string;
     label: string;
-  } | null>(null);
+  } | null>({ value: "January", label: "January" });
   const [selectedDayOption, setSelectedDayOption] = useState<{
     value: string;
     label: string;
-  } | null>(null);
+  } | null>({ value: "1", label: "1" });
   const [selectedYearOption, setSelectedYearOption] = useState<{
     value: string;
     label: string;
-  } | null>(null);
+  } | null>({ value: "2023", label: "2023" });
   const [selectedHourOption, setSelectedHourOption] = useState<{
     value: string;
     label: string;
-  } | null>(null);
+  } | null>({ value: "1", label: "1" });
   const [selectedMinuteOption, setSelectedMinuteOption] = useState<{
     value: string;
     label: string;
-  } | null>(null);
+  } | null>({ value: "1", label: "1" });
   const [selectedAMPMOption, setSelectedAMPMOption] = useState<{
     value: string;
     label: string;
-  } | null>(null);
+  } | null>({ value: "AM", label: "AM" });
   return (
     <Transition.Root show={showDatesPanel} as={Fragment}>
       <Dialog

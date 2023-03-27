@@ -1,5 +1,5 @@
 import Select from "react-select";
-import { Fragment, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { GlobeEuropeAfricaIcon, PlusIcon } from "@heroicons/react/24/outline";
 
