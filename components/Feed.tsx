@@ -27,7 +27,7 @@ const Feed: FunctionComponent = () => {
   // by flex-grow: 1; our component hold as much size as possible than other comps in container.
   return (
     <div className="max-w-2xl flex-grow border-l border-r border-gray-700 sm:ml-[73px] xl:ml-[370px]">
-      <div className="sticky top-0 z-50 flex items-center border-b border-gray-700 bg-black py-2 px-3 text-[#d9d9d9] sm:justify-between">
+      <div className="sticky top-0 z-10 flex items-center border-b border-gray-700 bg-black py-2 px-3 text-[#d9d9d9] sm:justify-between">
         <h2 title="home" className="text-lg font-bold sm:text-xl">
           <Link href="/">Home</Link>
         </h2>
