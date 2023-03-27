@@ -2,6 +2,8 @@ import {
   CalendarIcon,
   ChartBarIcon,
   FaceSmileIcon,
+  GifIcon,
+  MapPinIcon,
   PhotoIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -20,6 +22,7 @@ import { db, storage } from "../../utils/firebase";
 import { useSession } from "next-auth/react";
 import { changedSessionType } from "../../utils/typings";
 import SelectedDate from "./SelectedDate";
+import PollModel from "./Poll";
 
 const Input: FunctionComponent = () => {
   const [input, setInput] = useState("");
@@ -28,6 +31,7 @@ const Input: FunctionComponent = () => {
   const filePickerRef = useRef<any>(null);
   const [showEmojis, setShowEmojis] = useState(false);
   const [showDatesPanel, setShowDatesPanel] = useState(false);
+  const [showPollPanel, setShowPollPanel] = useState(true);
 
   const {
     data: session,
@@ -143,9 +147,17 @@ const Input: FunctionComponent = () => {
                   onChange={addImageToPost}
                 />
               </div>
-              <div
+
+              <div className="icon" onClick={() => setShowEmojis(false)}>
+                <GifIcon className="h-[22px] text-[#1d9bf0]" />
+              </div>
+
+              <div // couldn't find poll-icon
                 className="icon rotate-90"
-                onClick={() => setShowEmojis(false)}
+                onClick={() => {
+                  setShowEmojis(false);
+                  setShowPollPanel(!showPollPanel);
+                }}
               >
                 <ChartBarIcon className="h-[22px] text-[#1d9bf0]" />
               </div>
@@ -177,6 +189,13 @@ const Input: FunctionComponent = () => {
                 />
               )}
 
+              <div className="bg-[#1d9bf0]">
+                <PollModel
+                  showPollPanel={showPollPanel}
+                  setShowPollPanel={setShowPollPanel}
+                />
+              </div>
+
               <div
                 className="icon"
                 onClick={() => {
@@ -185,6 +204,13 @@ const Input: FunctionComponent = () => {
                 }}
               >
                 <CalendarIcon className="h-[22px] text-[#1d9bf0]" />
+              </div>
+
+              <div
+                className="icon cursor-auto"
+                onClick={() => setShowEmojis(false)}
+              >
+                <MapPinIcon className="h-[22px] text-[#1d9bf0] opacity-60" />
               </div>
             </div>
 
