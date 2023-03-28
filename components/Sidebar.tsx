@@ -8,6 +8,7 @@ import {
   UserIcon,
   ClipboardDocumentListIcon,
   EllipsisHorizontalIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
 import SidebarLink from "./SidebarLink";
@@ -38,6 +39,7 @@ const Sidebar: FunctionComponent = () => {
       <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
         <SidebarLink text="Home" Icon={HomeIcon} />
         <SidebarLink text="Explore" Icon={HashtagIcon} />
+        <SidebarLink text="Communities" Icon={UserGroupIcon} />
         <SidebarLink text="Notifications" Icon={BellIcon} />
         <SidebarLink text="Messages" Icon={InboxIcon} />
         <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
