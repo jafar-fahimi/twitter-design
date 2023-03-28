@@ -31,7 +31,7 @@ const Input: FunctionComponent = () => {
   const filePickerRef = useRef<any>(null);
   const [showEmojis, setShowEmojis] = useState(false);
   const [showDatesPanel, setShowDatesPanel] = useState(false);
-  const [showPollPanel, setShowPollPanel] = useState(true);
+  const [showPollPanel, setShowPollPanel] = useState(false);
 
   const {
     data: session,
@@ -108,13 +108,13 @@ const Input: FunctionComponent = () => {
         className="h-11 w-11 cursor-pointer rounded-full"
         onClick={() => {}}
       />
-      <div className="w-full divide-y divide-gray-700">
+      <div className="w-full pb-1 divide-gray-700">
         <div className={` ${input && "space-y-2.5"}`}>
           <textarea
             onClick={() => setShowEmojis(false)}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="What are you thinking about?"
+            placeholder="What's happening?"
             rows={2}
             className="min-h-[50px] w-full bg-transparent text-lg tracking-wide text-[#d9d9d9] placeholder-gray-500 outline-none"
           />
@@ -135,7 +135,7 @@ const Input: FunctionComponent = () => {
           <div className="flex items-center justify-between pt-2.5">
             <div className="flex items-center">
               <div
-                className="icon"
+                className="icon relative group"
                 onClick={() => filePickerRef.current?.click()}
               >
                 <PhotoIcon className="h-[22px] text-[#1d9bf0]" />
@@ -146,24 +146,42 @@ const Input: FunctionComponent = () => {
                   hidden
                   onChange={addImageToPost}
                 />
+                <span className="absolute top-8 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-xs text-white group-hover:scale-100">
+                  Photo
+                </span>
               </div>
 
-              <div className="icon" onClick={() => setShowEmojis(false)}>
+              <div
+                className="icon relative group"
+                onClick={() => setShowEmojis(false)}
+              >
                 <GifIcon className="h-[22px] text-[#1d9bf0]" />
+                <span className="absolute top-8 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-xs text-white group-hover:scale-100">
+                  Gif
+                </span>
               </div>
 
               <div // couldn't find poll-icon
-                className="icon rotate-90"
+                className="icon relative group"
                 onClick={() => {
                   setShowEmojis(false);
                   setShowPollPanel(!showPollPanel);
                 }}
               >
-                <ChartBarIcon className="h-[22px] text-[#1d9bf0]" />
+                <ChartBarIcon className="h-[22px] rotate-90 text-[#1d9bf0]" />
+                <span className="absolute top-8 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-xs text-white group-hover:scale-100">
+                  Poll
+                </span>
               </div>
 
-              <div className="icon" onClick={() => setShowEmojis(!showEmojis)}>
+              <div
+                className="icon relative group"
+                onClick={() => setShowEmojis(!showEmojis)}
+              >
                 <FaceSmileIcon className="h-[22px] text-[#1d9bf0]" />
+                <span className="absolute top-8 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-xs text-white group-hover:scale-100">
+                  Emoji
+                </span>
               </div>
 
               {showEmojis && (
@@ -189,28 +207,36 @@ const Input: FunctionComponent = () => {
                 />
               )}
 
-              <div className="bg-[#1d9bf0]">
-                <PollModel
-                  showPollPanel={showPollPanel}
-                  setShowPollPanel={setShowPollPanel}
-                />
-              </div>
+              {showPollPanel && (
+                <div className="bg-[#1d9bf0]">
+                  <PollModel
+                    showPollPanel={showPollPanel}
+                    setShowPollPanel={setShowPollPanel}
+                  />
+                </div>
+              )}
 
               <div
-                className="icon"
+                className="icon relative group"
                 onClick={() => {
                   setShowEmojis(false);
                   setShowDatesPanel(!showDatesPanel);
                 }}
               >
                 <CalendarIcon className="h-[22px] text-[#1d9bf0]" />
+                <span className="absolute top-8 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-xs text-white group-hover:scale-100">
+                  Schedule
+                </span>
               </div>
 
               <div
-                className="icon cursor-auto"
+                className="icon cursor-auto group relative"
                 onClick={() => setShowEmojis(false)}
               >
                 <MapPinIcon className="h-[22px] text-[#1d9bf0] opacity-60" />
+                <span className="absolute top-8 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-xs text-white group-hover:scale-100">
+                  Location
+                </span>
               </div>
             </div>
 
