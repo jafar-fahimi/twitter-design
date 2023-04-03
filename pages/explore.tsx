@@ -1,23 +1,9 @@
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-} from "@firebase/firestore";
 import { getProviders, getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import Modal from "../components/CommentModal";
 import Sidebar from "../components/Sidebar";
 import Widgets from "../components/Widgets";
 import Head from "next/head";
 import Login from "../components/Login";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import { commentModalState } from "../atoms/atoms";
-import { db } from "../utils/firebase";
-import Comment from "../components/Comment";
 import { changedSessionType } from "../utils/typings";
 import Trending from "../components/Trending";
 import { KeyIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -27,8 +13,6 @@ const PostPage: NextPage<any> = ({
   followResults = "",
   providers,
 }) => {
-  const [commentIsOpen, setCommentIsOpen] = useRecoilState(commentModalState);
-  const router = useRouter();
   const {
     data: session,
     status,
@@ -85,7 +69,6 @@ const PostPage: NextPage<any> = ({
           trendingResults={trendingResults}
           followResults={followResults}
         />
-        {commentIsOpen && <Modal />}
       </main>
     </div>
   );

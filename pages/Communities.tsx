@@ -19,7 +19,7 @@ const Communities: NextPage<any> = ({
   followResults = "",
   providers,
 }) => {
-  const [exploreModalIsOpen, setExploreModalIsOpen] = useState(true);
+  const [openModal, setOpenModal] = useState(true);
   const {
     data: session,
     status,
@@ -41,12 +41,12 @@ const Communities: NextPage<any> = ({
           trendingResults={trendingResults}
           followResults={followResults}
         />
-        {exploreModalIsOpen && (
-          <Transition.Root show={exploreModalIsOpen} as={Fragment}>
+        {openModal && (
+          <Transition.Root show={openModal} as={Fragment}>
             <Dialog
               as="div"
               className="fixed z-30 inset-0 pt-8"
-              onClose={setExploreModalIsOpen}
+              onClose={setOpenModal}
             >
               <div className="flex items-start justify-center min-h-[800px] sm:min-h-screen text-center sm:block">
                 <Transition.Child
@@ -63,7 +63,7 @@ const Communities: NextPage<any> = ({
                 <div className="z-30 text-white p-4 rounded-xl bg-black absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -ml-16 lg:w-1/3 text-left">
                   <span
                     className="cursor-pointer"
-                    onClick={() => setExploreModalIsOpen(false)}
+                    onClick={() => setOpenModal(false)}
                   >
                     <XMarkIcon
                       className="bg-black hover:bg-white/10 rounded-full transition ease-linear p-1"
