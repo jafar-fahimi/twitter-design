@@ -9,6 +9,7 @@ import {
   ClipboardDocumentListIcon,
   EllipsisHorizontalIcon,
   UserGroupIcon,
+  EllipsisHorizontalCircleIcon,
 } from "@heroicons/react/24/outline";
 
 import SidebarLink from "./SidebarLink";
@@ -28,7 +29,7 @@ const Sidebar: FunctionComponent = () => {
   } = useSession();
 
   return (
-    <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full">
+    <div className="hidden overflow-y-auto overflow-x-hidden !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-gray-600 sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full">
       <Link
         href="/"
         title="home"
@@ -36,7 +37,7 @@ const Sidebar: FunctionComponent = () => {
       >
         <Image alt="Twitter Logo" src="twitter.svg" width={30} height={30} />
       </Link>
-      <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
+      <div className="mt-4 mb-2.5 xl:ml-24">
         <SidebarLink text="Home" Icon={HomeIcon} />
         <SidebarLink text="Explore" Icon={HashtagIcon} />
         <SidebarLink text="Communities" Icon={UserGroupIcon} />
@@ -45,15 +46,14 @@ const Sidebar: FunctionComponent = () => {
         <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
         <SidebarLink text="Lists" Icon={ClipboardDocumentListIcon} />
         <SidebarLink text="Profile" Icon={UserIcon} />
-        <SidebarLink text="More" Icon={EllipsisHorizontalIcon} />
+        <SidebarLink text="More" Icon={EllipsisHorizontalCircleIcon} />
       </div>
       <button className="hidden xl:inline ml-auto bg-[#1d9bf0] text-white rounded-full w-56 h-[52px] text-lg font-bold py-3 shadow-md hover:bg-[#1a8cd8]">
         Tweet
       </button>
       <div
         onClick={() => signOut()}
-        className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation xl:ml-auto xl:-mr-5"
-        title="Sign Out"
+        className="group relative text-white flex items-center justify-center mt-auto hoverAnimation xl:ml-auto xl:-mr-5"
       >
         <img
           src={session?.user?.image || "people(1).png"}
@@ -65,6 +65,9 @@ const Sidebar: FunctionComponent = () => {
           <p className="text-[#6e767d]">@{session?.user?.tag}</p>
         </div>
         <EllipsisHorizontalIcon className="h-5 hidden xl:inline ml-10" />
+        <span className="absolute top-0 lg:top-12 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-sm lg:text-md text-white group-hover:scale-100">
+          Sign Out
+        </span>
       </div>
     </div>
   );

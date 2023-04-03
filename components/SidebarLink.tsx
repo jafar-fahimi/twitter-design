@@ -17,16 +17,18 @@ const SidebarLink: FunctionComponent<Props> = ({ Icon, text }) => {
 
   return (
     <div
-      className={`hoverAnimation flex items-center justify-center space-x-3 text-xl text-[#d9d9d9] xl:justify-start ${
+      className={`group relative hoverAnimation flex items-center justify-center space-x-3 text-xl text-white xl:justify-start ${
         active && "font-bold"
       }`}
-      title={text}
       onClick={() =>
         router.push(`${text == "Home" ? "/" : text.toLowerCase()}`)
       }
     >
       <Icon className="h-7" />
       <span className="hidden xl:inline">{text}</span>
+      <span className="absolute top-12 z-50 scale-0 rounded bg-gray-800 px-1 py-[0.5px] text-sm lg:text-md text-white group-hover:scale-100">
+        {text}
+      </span>
     </div>
   );
 };
