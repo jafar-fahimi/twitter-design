@@ -1,28 +1,15 @@
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-} from "@firebase/firestore";
 import { getProviders, getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { Fragment, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import Modal from "../components/CommentModal";
+import { Fragment, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Widgets from "../components/Widgets";
-import Post from "../components/Post";
-import { ArrowLeftIcon, HeartIcon } from "@heroicons/react/24/solid";
+import { HeartIcon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Login from "../components/Login";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import { commentModalState } from "../atoms/atoms";
 import { changedSessionType } from "../utils/typings";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   SparklesIcon,
-  TvIcon,
   UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -160,11 +147,21 @@ export const getServerSideProps: GetServerSideProps = async (
     trendingText: string;
   }[] = [];
   let followResults: {
-    id: string;
-    title: string;
-    firstName: string;
-    lastName: string;
-    picture: string;
+    name: { title: string; first: string; last: string };
+    login: {
+      uuid: string;
+      username: string;
+      password: string;
+      salt: string;
+      md5: string;
+      sha1: string;
+      sha256: string;
+    };
+    picture: {
+      large: string;
+      medium: string;
+      thumbnail: string;
+    };
   }[] = [];
 
   try {
@@ -193,24 +190,29 @@ export const getServerSideProps: GetServerSideProps = async (
     ];
 
     const fetchedData: {
-      data: {
-        id: string;
-        title: string;
-        firstName: string;
-        lastName: string;
-        picture: string;
-      }[];
-      total: number;
-      page: number;
-      limit: number;
+      results: [
+        {
+          name: { title: string; first: string; last: string };
+          login: {
+            uuid: string;
+            username: string;
+            password: string;
+            salt: string;
+            md5: string;
+            sha1: string;
+            sha256: string;
+          };
+          picture: {
+            large: string;
+            medium: string;
+            thumbnail: string;
+          };
+        }
+      ];
     } = await fetch(
-      process.env.NEXT_PUBLIC_DUMMYAPI_BASE_URL + "user?limit=5",
-      {
-        method: "GET",
-        headers: { "app-id": process.env.DUMMYAPI_TOKEN as string },
-      }
+      "https://randomuser.me/api/?results=30&inc=name,login,picture"
     ).then((res) => res.json());
-    followResults = fetchedData.data;
+    followResults = fetchedData.results;
   } catch (error) {
     if (error instanceof Error) console.log("error occured ", error.message);
   }

@@ -21,7 +21,9 @@ const SidebarLink: FunctionComponent<Props> = ({ Icon, text }) => {
         active && "font-bold"
       }`}
       title={text}
-      onClick={() => router.push(`${text == "Home" ? "/" : text}`)}
+      onClick={() =>
+        router.push(`${text == "Home" ? "/" : text.toLowerCase()}`)
+      }
     >
       <Icon className="h-7" />
       <span className="hidden xl:inline">{text}</span>
